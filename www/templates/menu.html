@@ -1,0 +1,9 @@
+  <ion-popover-view id="menu">
+    <ion-content has-bouncing="true">
+     	<ion-list>
+     		<ion-item ng-repeat="state in states" class="list-item" ng-click="changeState( state.state )" >
+     			{{ state.name }}
+     		</ion-item>
+     	</ion-list>
+    </ion-content>
+  </ion-popover-view>

@@ -1,0 +1,78 @@
+<ion-view id="account" view-title="Account">
+
+
+	<ion-content class="vert-row has-header" >	
+	<h1 style="text-align: center;" class="moon-header">Current Amount: </h1>
+	<div class="total-container">
+		<p  class="amount minus adjust" ng-click="adjust(-1)" >-</p>		 
+		<h2 class="amount" style=" color: #595757;"> {{ account.total | currency }}</h2>
+		<p class="amount plus adjust" ng-click="adjust(+1)" >+</p>
+	</div>
+	<div ng-click="extraSpending()" class="button extra-area button-block button-stable">
+		Emergency? Random Spending? </br> or Unplanned Payment?
+	</div>
+	<div ng-show="unexpected" >
+		<ion-item class="item item-divider" >What was it?</ion-item>
+		<label class="item item-input">
+			<input type="text" placeholder="What was it?" >
+			
+		</label>
+		<label class="item item-input">
+			<span ng-show="extra.price">$</span><input ng-model="extra.price" type="number" placeholder="How much did it cost?" >
+		</label>
+		<button class="button button-block button-dark" >Submit</button>
+	</div>
+	
+	<button class="button button-positive button-block" ng-click="openBillModal()">Add Bill</button>
+	<div class="list list-inset">
+		<div class="item item-divider">
+			Insert Reoccuring Needs
+		</div>
+	
+		<label class="item item-input ">
+			<input placeholder="Needs Name" type="text" ng-model="needs.name">
+		</label>
+		
+		<label class="item item-input">	
+			<span ng-show="needs.amount" >$</span> <input placeholder="Needs Amount" type="number" ng-model="needs.amount" >
+		</label>
+			
+		<label class="item item-input item-select" >
+			<div class="input-label">Reoccurence Time</div>
+
+			<select ng-model="needs.occurance">
+				<option value="daily" >Daily</option>
+				<option value="weekly" >Weekly</option>
+			</select>
+		</label>
+		<label class="item item-input item-select" ng-show="needs.occurance == 'weekly'" >
+			<div class="input-label">What Day of the Week Does this Occur?</div>
+
+			<select ng-model="needs.weekBegan">
+				<option value="0">Sunday</option>
+				<option value="1">Monday</option>
+				<option value="2">Tuesday</option>
+				<option value="3">Wednesday</option>
+				<option value="4">Thursday</option>
+				<option value="5">Friday</option>
+				<option value="6">Saturday</option>				
+			</select>
+		</label>
+	</div>
+	<button class="button button-positive button-block" ng-click="addNeed(needs)" >Add Need</button>
+	
+	<ion-item class="item item-divider">Needs That need to be Met</ion-item>	
+	
+	<ion-list class="first-list" style="padding-top: 10px; padding-bottom: 10px;"> 
+		<ion-item ng-repeat="n in listNeeds">{{ n.name}} | {{n.amount | currency }} | {{ n.occurance}}  <button ng-click="remove($index, 'needs')" class="button button-energized button-small" style="float: right;" >Remove</button></ion-item>
+		<ion-item ng-hide="listNeeds.length >= 1" style="color: #cccccc;">No Current Needs...</ion-item>
+	</ion-list>
+
+
+	<ion-item class="item item-divider" style="padding-top: 10px;">Bills you're Paying For</ion-item>
+	<ion-list class="second-list" style="padding-top: 10px;">
+		<ion-item ng-repeat="b in listBills">{{ b.name }} | {{b.amount | currency }} | {{ b.date | date }}    <button ng-click="remove($index, 'bills')" class="button button-energized button-small" style="float: right;">Remove</button></ion-item>
+		<ion-item ng-hide="listBills.length >= 1" style="color: #cccccc;">No Current Bills...</ion-item>
+	</ion-list>
+	</ion-content>
+</ion-view>

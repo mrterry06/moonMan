@@ -1,0 +1,205 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+//New Ionic Colors:
+
+$positive: #273A8A;
+
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+$moon-bg: #F6F7F9;
+
+.active {
+  	.modal-backdrop-bg {
+    	opacity: .5;
+    	transition: opacity 300ms ease-in-out;
+  	  background-color: #000;
+    }
+  } 
+
+.body {
+	background-color: #F6F7F9;
+}
+
+.item-divider {
+	background-color: $dark;
+	color: white;
+
+}
+
+.moon-header {
+	font-family: 'Baloo Bhai';
+	text-align: center;
+}
+
+#bill {
+	width: inherit;
+	min-height: inherit;
+	height: 296px;
+	top: 120px;
+	bottom: 120px;
+	left: 40px;
+	right: 30px;
+
+}
+
+#account {
+	background-color: $moon-bg;
+
+	$total-font-size: 35px;
+
+	.extra-area {
+
+		border-top: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+	}
+
+	.total-container {
+		text-align: center;
+
+		.amount {
+			display: inline-block;
+			padding: 0px 10px 0px 10px;
+
+		}
+
+		.adjust {
+			margin-top: -5px;
+
+			&::active {
+				opacity:.4;
+
+			}
+		}
+
+		.minus {
+			font-size: $total-font-size;
+		}
+
+		.plus {
+
+			font-size: $total-font-size;
+
+		}
+	}
+
+}
+
+#account-more {
+
+	.account-more-list {
+		top: 120px;
+	}
+
+
+	.listItem {
+		font-size: 25px;
+	}
+
+
+	.affordable {
+		color: $balanced;
+		font-weight: bolder;
+		font-size: 27px;
+	
+
+	}	
+
+	.almost {
+		color: $energized ;
+		font-weight: bolder;
+		font-size: 22px;
+	}
+
+	.not-affordable {
+		color: $assertive;
+		font-weight: 18px;
+	}
+
+
+
+
+}
+
+#finance-view {
+
+	.ion-navicon-round {
+		font-size: 19px;
+	}
+}
+
+
+#weekday {
+
+	label {
+		border-top: none;
+		padding: 20px 20px 20px 20px;
+
+
+	}
+
+	.item {
+		overflow: visible;
+	}
+
+
+	.item-select select {
+
+		font-size: 45px !important;
+		top: -20px;
+		padding: 0px 51px 0 13px;
+	}
+
+	.days {
+
+		&::after {
+
+			font-size: 30px;
+		}
+	}
+
+
+}
+
+#extra-spending {
+
+	width: inherit;
+	min-height: inherit;
+	height: 400px;
+	top: 120px;
+	bottom: 120px;
+	left: 40px;
+	right: 30px;
+}
+
+
+
+#menu {
+	
+	.list-item {
+
+		&::active {
+		  background-color: black;
+		  opacity: 0.2;
+		}
+	}
+}

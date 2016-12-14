@@ -1,0 +1,14 @@
+
+	<ion-view id="finance-view">	
+			<ion-header-bar align-title="center" class="bar-positive">
+				<div class="buttons">
+					<button class="button" ui-sref="finance.account" >Account</button>
+				</div>
+
+				<h1 class="title">{{ finance.title }}</h1>
+				<div class="buttons" >
+					<button  class="button" ng-click="openNavigationMenu($event)"  ><i class="ion-navicon-round"></i></button>
+				</div>
+			</ion-header-bar>
+		<ion-nav-view name="finance-content" id="finance-content"></ion-nav-view>	
+	</ion-view>

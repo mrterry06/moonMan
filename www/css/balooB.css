@@ -1,0 +1,6 @@
+@font-face {
+	font-family: 'Baloo+Bhai';
+	font-style: normal;
+	font-weight: 800;
+	src: local('Baloo+Bhai'), url(fonts/BalooBhai-Regular.ttf) format('ttf');
+}

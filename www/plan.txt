@@ -1,0 +1,72 @@
+The plan:
+	Lib, API's and Graphics:
+
+Use D3.js to implement chart based progression along with stat visualzation.
+
+Use Yodlee or plaid to get bank account info and monitor transactions.
+
+Use toonboom/other program to develop graphic for splashscreen and icon
+
+Clean up with Adobe Photoshop
+
+	Plan for the rest of App:
+
+-Develop Wants and Goals
+
+-Develop Splashscreen and Icons
+
+-Connect to Yodless or Plaid
+
+-Develop Charts for outcome.html
+
+-Implement Animations for smoother effects
+
+-Show if all bills will be paid on time
+
+-Show which bill will be short and at what time
+
+-Learn to Grab days of week and time to properly take out bills--- 
+	how to:
+		return day of the week:
+		  var d = new Date();
+		  var n = d.getDate();
+		  0 - 6; 0 = sunday; 6 = saturday;
+		return day of the month:
+		  var d = new Date();
+		  var n = d.getDay(); 
+		return month:
+		  var d = new Date();
+		  var n = d.getMonth();
+		 0-11; 0 = Jan; 11 = Dec;    
+
+-Develop "Update" Screen
+
+-Devlope Cleaner UI
+
+-Add Animations
+
+-Set different Accounts for money to be seperated into
+
+-Show what percentage a particular part is taking
+-<h1>With wants...You will be able to do this by this date</h1>
+
+	Steps:
+
+-Finish Routing Structure for application
+-deciding on view amount
+-what will be on each view
+-how each view will function and relate
+-Implement previous steps
+-implement charts
+-implement api access
+-Clean up Ui
+-Add animations
+-Develop Splash Screens and Icons
+ 
+
+
+	Consierations:
+
+- Deploying to app store
+- 	
+	
