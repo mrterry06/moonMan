@@ -198,6 +198,28 @@ angular.module('moonMan.services', [])
     }
 })
 
+.factory('updateService', function($rootScope){
+
+  return {
+    grabInfo: function(){
+      return localforage.getItem('profileInfo')
+        .then(function(val){
+          console.warn(val);
+          return val || {};
+        });
+    },
+    updateInfo: function(info){
+      return localforage.setItem('profileInfo', info)
+            .then(function(){
+              return true;
+            }).catch(function(err){
+              console.warn(err);
+              return false;
+            });
+    }
+  }
+})
+
 .factory('extraService', function($rootScope, $ionicModal){
 
     var extraScope = $rootScope.$new(true);

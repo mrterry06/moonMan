@@ -286,11 +286,29 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 })
 
-.controller('updateCtrl', function($scope, $state){
+.controller('updateCtrl', function($scope, $state, updateService, $ionicPopup){
+  
+
   $scope.$on("$ionicView.beforeEnter", function(){
     $scope.finance.title = "Update";
-
+     
+     updateService.grabInfo().then(function(val){
+      console.log(val);
+     });
   });
+
+  $scope.update = function(info){
+    $scope.loading = true;
+    updateService.updateInfo().then(function(res){
+      $scope.loading = false;
+      $ionicPopup.alert({
+        title: "Updated!",
+        template: "Your information has been updated"
+      });
+
+    });
+  }
+  
     
 })
 

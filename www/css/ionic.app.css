@@ -9906,6 +9906,16 @@ a.button {
   left: 40px;
   right: 30px; }
 
+#update ion-spinner {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 60px;
+  background-color: white; }
+
 #menu .list-item::active {
   background-color: black;
   opacity: 0.2; }
