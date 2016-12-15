@@ -262,9 +262,9 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.$on('$ionicView.beforeEnter', function(){
     $scope.finance.title = "Account";
-    localforage.getItem('userInfo').then(function(userObj){
-        $scope.currentAmount= userObj.initial;
-     
+    localforage.getItem('userInfo').then(function(userInfo){
+        $scope.currentAmount= userInfo.initial;
+        $scope.savings = userInfo.savings;
     });
   });
 
