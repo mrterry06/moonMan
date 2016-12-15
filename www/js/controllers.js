@@ -406,7 +406,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   
 
 })
-.controller('contactCtrl', function($scope){
+.controller('contactCtrl', function($scope,$http, $ionicPopup){
 
 
   $scope.$on("$ionicView.beforeEnter", function(){
@@ -416,7 +416,23 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.sendMessage = function(message){
     $scope.loading = true;
+    // When going to production uncomment the  body  below
+  //    $http.post('ec2Address/mail').then(function(){
+  //       $scope.mail = {};
+  //       $scope.loading = false;
+  //       $ionicPopup.alert({
+  //         title: "Sent!",
+  //         template: "Your message has been since, We will get back to you as soon as possible"
+  //     }, function(err){
+  //         console.warn(err);
+  //         $scope.loading = false;
+  //         $ionicPopup.alert({
+  //           title: "Message failed to send",
+  //           template: "The message failed to send, We apologize for that."
+  //         });
+  //     });
 
+  //    });
   }
 
 })
