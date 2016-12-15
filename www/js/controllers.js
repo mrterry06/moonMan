@@ -406,7 +406,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   
 
 })
-.controller('contactCtrl', function($scope,$http, $ionicPopup){
+.controller('contactCtrl', function($scope, $http, $ionicPopup, $timeout){
 
 
   $scope.$on("$ionicView.beforeEnter", function(){
@@ -415,7 +415,21 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 
   $scope.sendMessage = function(message){
+  var emailRegEx =   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     $scope.loading = true;
+  
+  if ( !emailRegEx.test(message.email) ){
+      $scope.loading = false;
+
+
+    $ionicPopup.alert({
+          title: "Invalid Email",
+          template: "The email you have inserted is invalid, please enter a valid email"
+      });
+    return;
+  }
+
+
     // When going to production uncomment the  body  below
   //    $http.post('ec2Address/mail').then(function(){
   //       $scope.mail = {};
@@ -433,6 +447,12 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   //     });
 
   //    });
+
+  //Delete when going to production
+    $timeout(function(){
+      $scope.loading = false;
+      $scope.mail = {};
+    }, 2000);
   }
 
 })
