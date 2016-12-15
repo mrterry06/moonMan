@@ -113,6 +113,16 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
       }
     })
 
+    .state('finance.contact', {
+      url: '/contact',
+      views: {
+        "finance-content" : {
+          templateUrl: 'templates/menu/contact.html',
+          controller: 'contactCtrl'
+        }
+      }
+    })
+
     .state("finance.settings", {
       url: '/account-more',
       views: {
