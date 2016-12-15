@@ -7,48 +7,72 @@ angular.module('moonMan.services', [])
   billScope.bill = {};
   billScope.accumulatedInfo = {};
 
+  billScope.$watchCollection('accumulatedInfo', function(){
+     console.log(billScope.accumulatedInfo);
+    if (billScope.accumulatedInfo.hasOwnProperty('savings')){
+        
+        localforage.setItem('profileInfo', {
+         
+          current: billScope.accumulatedInfo['initial'],
+          amount:  parseFloat(billScope.accumulatedInfo['payCheckAmount']),
+          weekday: billScope.accumulatedInfo['paydayOfWeek'],
+          goal: parseFloat(billScope.accumulatedInfo['savings']),
+          frequency: billScope.accumulatedInfo['reoccurance']
+        
+        });
+    
+    }
 
-      $ionicModal.fromTemplateUrl('templates/account/bill.html',{
+    localforage.setItem("registered", true);
+
+  })  
+
+  $ionicModal.fromTemplateUrl('templates/account/bill.html',{
+    
         animation: 'slide-in-up',
         scope: billScope
+    
       }).then(function(modal){
+    
         billModal = modal;
-        console.log("bill Modal initiated");
+     
       });
 
       billScope.addBill = function(bill){
-        console.log(bill);
+        
         localforage.getItem("bills")
-        .then(function(arr){
-          console.log(arr);
-          if (arr == undefined) { arr = []; }
-          arr[arr.length] = bill;
+          .then(function(arr){
+        
+              if (!arr)  arr = []; 
+
+              arr[arr.length] = bill;
+
           localforage.setItem("bills", arr).then(function(){
+
             console.log("bills successfully stored");
+
           });
+
         });
+
         billScope.bill = {};
         billModal.hide();
-      }
+  }
 
 
-      return {
+  return {
 
         openWindow: function(){
+
           billModal.show();
-          console.log("Opening Bill Modal");
+          
         },
         getBills: function(){
-          console.log("We should be getting bills");
+
          return localforage.getItem("bills").then(function(value){
-            if (value == undefined){
-              console.log(value);
-              console.log("value has no data");
-              return [];
-            }
-            console.log("value has data");
-            console.log(value);
-            return value;
+
+            return value || [];
+
          });
 
         },
@@ -59,53 +83,61 @@ angular.module('moonMan.services', [])
 
         init: function(obj){
 
+          console.log(obj);
           var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
           var yearFirstDay = Math.floor(timeStamp / 86400000);
           var today = Math.ceil((new Date().getTime())/ 86400000);
           var userSignUpDate = today - yearFirstDay;
 
 
-          console.log("Gathering Information");
-          for(var key in obj){
-              if(key == "initial"){ obj[key] = Number(obj[key]); 
-               console.log("Your Key is being parsed");
-            }
-
-              billScope.accumulatedInfo[key] = obj[key];
+          if (obj.hasOwnProperty('initial') && typeof obj['initial'] == "string"){
+              
+                obj['initial'] = parseFloat(obj['initial']);
+               billScope.accumulatedInfo['initial'] = obj['initial'];
           }
 
         
-          if(obj['lastPayDate'] && (typeof obj['lastPayDate'] !== Number)){
-            var strDate = obj['lastPayDate'].toString();
-            var strMonth = obj['lastPayDate'].getMonth(); 
-            var arr = strDate.split(" ");
-      
-
-            var realDate = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
+          if(obj['lastPayDate'] && typeof obj['lastPayDate'] !== Number){
+            var strDate = obj['lastPayDate'].toString(),
+            strMonth = obj['lastPayDate'].getMonth(), 
+             arr = strDate.split(" "),
+              realDate = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
             billScope.accumulatedInfo["lastPayDate"] = (Math.ceil((new Date(realDate).getTime())/ 86400000)) - yearFirstDay;
 
           }
           
-          if(billScope.accumulatedInfo["dayOfYear"] == undefined){
+          if(!billScope.accumulatedInfo["dayOfYear"]){
             billScope.accumulatedInfo["dayOfYear"] = userSignUpDate;
           }
 
-          console.log( billScope.accumulatedInfo);
+          for(var key in obj){
+            if(!billScope.accumulatedInfo.hasOwnProperty(key)){
+              billScope.accumulatedInfo[key] = obj[key];
+            }
+          }
+
+
           localforage.setItem('userInfo', billScope.accumulatedInfo).then(function(){
+            
             console.log("User information has been stored");
+
           });
         },
         userInfo: function(){
-          console.log(billScope.accumulatedInfo);
+          
           return localforage.getItem('userInfo').then(function(value){
-            console.log("userinfo is a promise that should return an object");
+          
               return value;
+
           });
         },
         resetInitial: function(data){
           billScope.accumulatedInfo['initial'] = data;
+          
           localforage.setItem('userInfo', billScope.accumulatedInfo).then(function(){
+            
             console.log("Initial property is being changed");
+          
           });
         }
 
@@ -123,9 +155,13 @@ angular.module('moonMan.services', [])
 
   function getUserInfo(){
    return localforage.getItem('userInfo').then(function(value){
+      
       console.log(value);
+      
       return value;
+    
     });
+  
   }
 
 
@@ -140,33 +176,33 @@ angular.module('moonMan.services', [])
           var lastPayDate = userObj.lastPayDate;
           var dayIncrement;
 
-          if(userObj.reoccurance == 'weekly'){
+          if (userObj.reoccurance == 'weekly'){
             dayIncrement =7;
-          } else if(userObj.reoccurance =="bi-weekly"){
+          } else if (userObj.reoccurance =="bi-weekly"){
             dayIncrement = 14;
           } else {
             dayIncrement = 30;
           }
 
-           while (lastPayDate <= dayOfYear){
-              lastPayDate += dayIncrement;
-              if (lastPayDate <= dayOfYear){
-                pay += check;
-              }
 
-           }
+      
+         while (lastPayDate <= dayOfYear){
+            lastPayDate += dayIncrement;
+            if (lastPayDate <= dayOfYear){
+              pay += check;
+            }
+
+         }
+
 
            userObj.initial += pay;
            userObj.lastPayDate = lastPayDate;
 
 
-
-        console.log(userObj);
-
         localforage.setItem('userInfo', userObj);
 
       });
-      console.log("Right about here should be an object");
+
     }
 
   }
@@ -200,6 +236,9 @@ angular.module('moonMan.services', [])
 
 .factory('updateService', function($rootScope){
 
+
+
+
   return {
     grabInfo: function(){
       return localforage.getItem('profileInfo')
@@ -211,7 +250,27 @@ angular.module('moonMan.services', [])
     updateInfo: function(info){
       return localforage.setItem('profileInfo', info)
             .then(function(){
-              return true;
+              
+              console.log("stored to profileInfo");
+              
+              return localforage.getItem('userInfo').then(function(val){
+
+                  val.initial = info.current;
+                  val.payCheckAmount = info.amount;
+                  val.paydayOfWeek = info.weekday;
+                  val.savings = info.goal;
+                  val.reoccurance = info.frequency;
+
+                  return  localforage.setItem('userInfo', val).then(function(){
+                  
+                      console.log("Reset User Info");
+                  
+                      return true;
+                  
+                  });
+
+               });
+
             }).catch(function(err){
               console.warn(err);
               return false;
