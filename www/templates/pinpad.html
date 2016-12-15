@@ -1,0 +1,19 @@
+<ion-view id="pinpad">
+	<ion-content padding="true">
+	<div class="inputContainer">
+
+
+	</div>
+	<div class="keysContainer">	
+		<div class="colorKeys" ng-repeat="color in colors" ng-click="chosenColor(color)"  ng-style="{'background-color': color}" style="height: 100px; width: 33%;  display: inline-block; border: 1px solid black;">
+		
+		</div>
+	</div>
+	<div class="eventsContainer" style="white-space: nowrap;">
+		<div class="eventKeys button button-default" ng-repeat="event in events" style="width: 50%;" >
+			{{ event }}
+		</div>
+	</div>	
+	</ion-content>
+	<ion-spinner ng-show="loading" icon="lines"></ion-spinner>
+</ion-view>

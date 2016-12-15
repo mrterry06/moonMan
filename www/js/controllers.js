@@ -372,36 +372,54 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 .controller('testCtrl', function($scope , $ionicSideMenuDelegate){
 
-      var date1 = "10-14-2016";
-      var date2 = "10-16-2016";
+  //     var date1 = "10-14-2016";
+  //     var date2 = "10-16-2016";
 
-      var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-     var yearFirstDay = Math.floor(timeStamp / 86400000);
-     var today = Math.ceil((new Date().getTime())/ 86400000);
-     var dayOfYear = today - yearFirstDay;
-
-
-      var timeStamp1 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-     var yearFirstDay1 = Math.floor(timeStamp1 / 86400000);
-     var today1 = Math.ceil((new Date(date1).getTime())/ 86400000);
-     var dayOfYear1 = today1 - yearFirstDay1;
+  //     var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
+  //    var yearFirstDay = Math.floor(timeStamp / 86400000);
+  //    var today = Math.ceil((new Date().getTime())/ 86400000);
+  //    var dayOfYear = today - yearFirstDay;
 
 
+  //     var timeStamp1 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
+  //    var yearFirstDay1 = Math.floor(timeStamp1 / 86400000);
+  //    var today1 = Math.ceil((new Date(date1).getTime())/ 86400000);
+  //    var dayOfYear1 = today1 - yearFirstDay1;
 
-      var timeStamp2 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-     var yearFirstDay2 = Math.floor(timeStamp2 / 86400000);
-     var today2 = Math.ceil((new Date(date2).getTime())/ 86400000);
-     var dayOfYear2 = today2 - yearFirstDay2;
 
-  $scope.test = function(){
-    console.log(dayOfYear);
-    console.log(dayOfYear1);
-    console.log(dayOfYear2);
+
+  //     var timeStamp2 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
+  //    var yearFirstDay2 = Math.floor(timeStamp2 / 86400000);
+  //    var today2 = Math.ceil((new Date(date2).getTime())/ 86400000);
+  //    var dayOfYear2 = today2 - yearFirstDay2;
+
+  // $scope.test = function(){
+  //   console.log(dayOfYear);
+  //   console.log(dayOfYear1);
+  //   console.log(dayOfYear2);
 
     $ionicSideMenuDelegate.toggleRight();
 
-  }
+  
 
+})
+.controller('pinPadCtrl', function($scope){
+  $scope.colors = ["red","yello","blue", "green", "orange", "purple", "gold", "white", "pink"];
+  $scope.events = ["Delete", "Submit"];
+  $scope.passArr = [];
+
+  $scope.$watchCollection('passArr', function(){
+
+    if($scope.passArr.length == 4){
+      $scope.loading = true;
+      $scope.passArr.join('');
+    }
+  });
+
+  $scope.chosenColor = function(color){
+    console.log(color);
+    $scope.passArr.push(color);
+  }
 })
 .controller('menuCtrl', function(){
 })

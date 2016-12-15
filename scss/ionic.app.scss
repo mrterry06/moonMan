@@ -28,6 +28,27 @@ $positive: #273A8A;
 
 $moon-bg: #F6F7F9;
 
+
+/* GLOBALS */
+
+	ion-spinner {
+		position: fixed;
+		top: 50%;
+		left: 45%;
+		text-align: center;
+		border: 1px solid black;
+		border-radius: 8px;
+		width: 60px;
+		background-color: white;
+	}
+
+
+
+
+
+/*END GLOBALS */
+
+
 .active {
   	.modal-backdrop-bg {
     	opacity: .5;
@@ -213,6 +234,15 @@ $moon-bg: #F6F7F9;
 		&::active {
 		  background-color: black;
 		  opacity: 0.2;
+		}
+	}
+}
+
+#pinPad {
+	.colorKeys {
+
+		&::active {
+			opacity: 0.2;
 		}
 	}
 }

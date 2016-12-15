@@ -32,6 +32,11 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
   $stateProvider
 
   // setup an abstract state for the tabs directive
+    .state("pinPad", {
+      url: '/pinPad',
+      templateUrl: 'templates/pinPad.html',
+      controller: 'pinPadCtrl'
+    })
     .state("initial", {
       url: '/initial',
       templateUrl: 'templates/initial.html',

@@ -9815,6 +9815,18 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+/* GLOBALS */
+ion-spinner {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 60px;
+  background-color: white; }
+
+/*END GLOBALS */
 .active .modal-backdrop-bg {
   opacity: .5;
   transition: opacity 300ms ease-in-out;
@@ -9918,4 +9930,7 @@ a.button {
 
 #menu .list-item::active {
   background-color: black;
+  opacity: 0.2; }
+
+#pinPad .colorKeys::active {
   opacity: 0.2; }
