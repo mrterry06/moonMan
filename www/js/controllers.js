@@ -408,6 +408,17 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 })
 .controller('contactCtrl', function($scope){
 
+
+  $scope.$on("$ionicView.beforeEnter", function(){
+    $scope.finance.title = "Contact";
+  });
+
+
+  $scope.sendMessage = function(message){
+    $scope.loading = true;
+
+  }
+
 })
 .controller('pinPadCtrl', function($scope){
   $scope.colors = ["red","yello","blue", "green", "orange", "purple", "gold", "white", "pink"];
