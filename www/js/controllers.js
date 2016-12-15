@@ -352,6 +352,9 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   }, {
     name: 'Settings',
     state: "finance.update"
+  }, {
+    name: "Contact",
+    state: "finance.contact"
   }];
 
 
@@ -404,7 +407,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 })
 .controller('contactCtrl', function($scope){
-  
+
 })
 .controller('pinPadCtrl', function($scope){
   $scope.colors = ["red","yello","blue", "green", "orange", "purple", "gold", "white", "pink"];
