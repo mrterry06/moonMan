@@ -9889,13 +9889,13 @@ ion-spinner {
   color: #ef473a;
   font-weight: 18px; }
 
-#account-more .wants-list ion-item {
+#account-more .wants-list ion-item, #account-more .goals-list ion-item {
   position: relative; }
-  #account-more .wants-list ion-item .remove {
+  #account-more .wants-list ion-item .remove, #account-more .goals-list ion-item .remove {
     position: absolute;
     right: 5px;
     top: 10px; }
-  #account-more .wants-list ion-item .purchase {
+  #account-more .wants-list ion-item .purchase, #account-more .goals-list ion-item .purchase {
     top: 10px;
     position: absolute;
     right: 63px; }

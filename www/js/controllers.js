@@ -253,7 +253,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 })
 
-.controller('accountMore', function($scope, $state, accountMoreService){
+.controller('accountMore', function($scope, $state, accountMoreService, $ionicPopup){
   $scope.want = {};
   $scope.goal = {};
  // $scope.wants = [];
@@ -292,11 +292,30 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     accountMoreService.storeGoals($scope.goals);
   }
 
-  $scope.purchase = function(item, i, selectedArr){
+  $scope.purchaseOrRemove = function(item, i, arrName, action){
+    
+    
+    
+      $ionicPopup.show({
+          title: action, 
+          template: "Are you sure you want to " + action.toLowerCase() + " this item?",
+          scope: $scope,
+          buttons: [{text: 'Cancel'}, {text: '<b>' + action + '</b>',
+            type: 'button-outline ' + ( action == "Purchase" ? "button-positive" : "button-assertive"),
+            onTap: function(e){
+              var selectedArr; 
 
-     selectedArr == 'wants' ? $scope.wants.splice(i, 1) : $scope.goals.splice(1, i);
-    accountMoreService.purchase(item, $scope.wants, selectedArr);
+              arrName == 'wants' ? ( $scope.wants.splice(i, 1), selectedArr = $scope.wants ): ( $scope.goals.splice(i, 1), selectedArr = $scope.goals );
+
+               action === "Purchase" ? accountMoreService.purchase(item, selectedArr, arrName) : accountMoreService.remove(item, selectedArr , arrName);
+              
+            }
+            
+          }]
+      });
+
   }
+
 
 })
 
@@ -307,18 +326,25 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     $scope.finance.title = "Update";
      
      updateService.grabInfo().then(function(val){
-      $scope.edit = val;
+     
+       $scope.edit = val;
+     
      });
+
   });
 
   $scope.update = function(info){
-    $scope.loading = true;
-    updateService.updateInfo(info).then(function(res){
-      $scope.loading = false;
-      $ionicPopup.alert({
-        title: "Updated!",
-        template: "Your information has been updated"
-      });
+      
+      $scope.loading = true;
+      
+      updateService.updateInfo(info).then(function(res){
+      
+        $scope.loading = false;
+      
+        $ionicPopup.alert({
+          title: "Updated!",
+          template: "Your information has been updated"
+        });
 
     });
   }

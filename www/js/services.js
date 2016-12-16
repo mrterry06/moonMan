@@ -346,12 +346,26 @@ angular.module('moonMan.services', [])
      });
   }
 
+  function remove(item, updatedArr, selectedArr){
+
+      return localforage.getItem('needsAndWants').then(function(val){
+
+        val[selectedArr] = updatedArr;
+
+        return localforage.setItem('needsAndWants', val).then(function(){
+          return true;
+        }); 
+      
+      });
+  }
+
   return {
 
      storeWants: storingWants,
      getAllInfo: grabInfo,
      storeGoals: storingGoals,
-     purchase: purchase
+     purchase: purchase,
+     remove: remove
 
   }
 

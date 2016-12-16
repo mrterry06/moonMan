@@ -1,48 +1,71 @@
 <ion-view id="account-more">
+
 	<ion-content class='has-header'>
+
 		<h1 class="moon-header">Savings:</h1>
-			<h3 style="text-align: center"> You have <span ng-class="{assertive: savings < 0, energized: savings <= savings/4, balanced: savings > savings/4 }">${{ savings }} USD</span> in savings</h3>
+
+		<h3 style="text-align: center"> You have <span ng-class="{assertive: savings < 0, energized: savings <= savings/4, balanced: savings > savings/4 }">${{ savings }} USD</span> in savings</h3>
+		
 		<div class="list list-inset">
+
 			<p class="item item-divider">Insert Want</p>
+			
 			<label class="item item-input">
 				<input ng-model="want.name" type="text" placeholder="Name of Want? Ex. Car">
 			</label>
+			
 			<label class="item item-input" >
 				<input ng-model="want.amount" type="number" placeholder="Amount" >
 			</label>			
+			
 			<button class="button button-block button-positive" ng-click="addWant(want)">Add Want</button>
 		</div>
 		<div class="list list-inset">
+			
 			<p class="item item-divider" >Insert Goal</p>
+			
 			<label class="item item-input" >
 				<input ng-model="goal.name" placeholder="What is the Goal? Ex. Travel to Tahiti" type="text">
 			</label>
+			
 			<label class="item item-input">
 				<input ng-model="goal.amount" placeholder="Amount" type="number">
 			</label>						
+			
 			<button class="button button-block button-positive" ng-click="addGoal(goal)" >Add Goal</button>
 		</div>
 		<!-- <ion-content class="account-more-list" style="width: 50%; left: initial; right: 0; position: absolute;" scroll="true"> -->
 			<ion-list class="wants-list">
+			
 				<ion-item class="item-divider">Wants List </ion-item>
 				
 				<ion-item ng-show="wants.length == 0" >No Wants Currently Listed</ion-item>
 				
 				<ion-item ng-repeat="want in wants" ng-class="{'affordable': want.amount < currentAmount, 'almost': want.amount > currentAmount && want.amount < (currentAmount+200), 'not-affordable': want.amount > (currentAmount+200)}" >
 
-					<b>{{want.name | shortenText }}</b> |  {{ want.amount | currency }} <button class="button button-energized button-small remove" >Remove</button>
+					<b>{{want.name | shortenText }}</b> |  {{ want.amount | currency }} <button class="button button-energized button-small remove"  ng-click="purchaseOrRemove(want, $index, 'wants', 'Remove')">Remove</button>
 				
-					<button ng-hide=" want.amount > currentAmount" class="button button-outline button-positive button-small purchase">Purchase</button>
+					<button ng-click="purchaseOrRemove(want, $index, 'wants', 'Purchase')" ng-hide=" want.amount > currentAmount" class="button button-outline button-positive button-small purchase">Purchase</button>
 				
 				</ion-item>
+
 			</ion-list>
 		<!-- </ion-content> -->
 		<!-- <ion-content class="account-more-list" style="width: 50%; left: 0;" scroll="true"> -->
 			<ion-list class="goals-list">
 				<ion-item class="item-divider">Goals List </ion-item>			
 				<ion-item ng-show="goals.length == 0" >No Goals Currently Listed</ion-item>
-				<ion-item ng-repeat="goal in goals" ng-class="{'affordable': goal.amount < currentAmount, 'almost': goal.amount > currentAmount && goal.amount < (currentAmount +200), 'not-affordable': goal.amount > (currentAmount + 200)}"><b>{{goal.name}}</b> |  {{goal.amount | currency}} <button style="float-right" class="button button-energized button-small" >Remove</button></ion-item>
+				
+				<ion-item ng-repeat="goal in goals" ng-class="{'affordable': goal.amount < currentAmount, 'almost': goal.amount > currentAmount && goal.amount < (currentAmount +200), 'not-affordable': goal.amount > (currentAmount + 200)}">
+
+					<b>{{goal.name | shortenText }}</b> |  {{goal.amount | currency}} <button ng-click="purchaseOrRemove(goal, $index, 'goals', 'Remove')" class="button button-energized button-small remove" >Remove</button>
+
+					<button ng-click="purchaseOrRemove(goal, $index, 'goals', 'Purchase')" ng-hide=" goal.amount > currentAmount" class="button button-outline button-positive button-small purchase">Purchase</button>
+					
+
+				</ion-item>
 			</ion-list>
 		<!-- </ion-content>	 -->
 	</ion-content>
+	<ion-spinner ng-show="loading" icon="lines"></ion-spinner>
 </ion-view>
