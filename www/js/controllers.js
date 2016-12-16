@@ -253,15 +253,21 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 })
 
-.controller('accountMore', function($scope, $state){
+.controller('accountMore', function($scope, $state, accountMoreService){
   $scope.want = {};
   $scope.goal = {};
-  $scope.wants = [];
-  $scope.goals = [];
+ // $scope.wants = [];
+  //$scope.goals = [];
 
 
   $scope.$on('$ionicView.beforeEnter', function(){
     $scope.finance.title = "Account";
+    accountMoreService.getAllInfo().then(function(needsAndWants){
+       
+       $scope.wants = needsAndWants.wants || [];
+       $scope.goals = needsAndWants.goals || [];
+
+    });
     localforage.getItem('userInfo').then(function(userInfo){
         $scope.currentAmount= userInfo.initial;
         $scope.savings = userInfo.savings;
@@ -277,11 +283,19 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   $scope.addWant = function(want){
     $scope.wants.push(want);
     $scope.want = {};
+    accountMoreService.storeWants($scope.wants);
   }
 
   $scope.addGoal = function(goal){
     $scope.goals.push(goal);
     $scope.goal = {};
+    accountMoreService.storeGoals($scope.goals);
+  }
+
+  $scope.purchase = function(item, i, selectedArr){
+
+     selectedArr == 'wants' ? $scope.wants.splice(i, 1) : $scope.goals.splice(1, i);
+    accountMoreService.purchase(item, $scope.wants, selectedArr);
   }
 
 })

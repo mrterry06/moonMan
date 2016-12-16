@@ -279,6 +279,86 @@ angular.module('moonMan.services', [])
   }
 })
 
+.factory('accountMoreService', function($rootScope){
+
+
+  function storingWants(wantsArr){
+
+      return localforage.getItem('needsAndWants').then(function(val){
+
+           val = val || {};
+           val.wants = wantsArr;
+
+         return  localforage.setItem('needsAndWants', val)
+          .then(function(){
+              
+                return true; 
+          });
+      });
+  }
+
+  function grabInfo(){
+      
+      return localforage.getItem('needsAndWants').then(function(val){
+
+            return val || {};
+      });
+  }
+
+  function storingGoals(goalsArr){
+
+    return localforage.getItem('needsAndWants').then(function(val){
+       val = val || {};
+       val.goals = goalsArr;
+
+       return localforage.setItem('needsAndWants', val)
+       .then(function(){
+          return true;
+       });
+
+    });
+
+  }
+
+  function purchase(item, updatedArr, selectedArr){
+
+     return localforage.getItem('needsAndWants').then(function(nAw){
+        
+        return  localforage.getItem('userInfo').then(function(uI){
+          
+          return localforage.getItem('profileInfo').then(function(pi){
+              
+              nAw[selectedArr] = updatedArr;
+              uI.initial -= parseFloat(item.amount);
+              pi.current -= parseFloat(item.amount);
+              localforage.setItem('userInfo', uI);
+              localforage.setItem('profileInfo', pi);
+
+              return localforage.setItem('needsAndWants', nAw).then(function(){
+              
+                  return true;
+              
+              });
+
+          });
+        });
+
+     });
+  }
+
+  return {
+
+     storeWants: storingWants,
+     getAllInfo: grabInfo,
+     storeGoals: storingGoals,
+     purchase: purchase
+
+  }
+
+
+
+})
+
 .factory('extraService', function($rootScope, $ionicModal){
 
     var extraScope = $rootScope.$new(true);

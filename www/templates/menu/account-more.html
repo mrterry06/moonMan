@@ -25,15 +25,23 @@
 		<!-- <ion-content class="account-more-list" style="width: 50%; left: initial; right: 0; position: absolute;" scroll="true"> -->
 			<ion-list class="wants-list">
 				<ion-item class="item-divider">Wants List </ion-item>
+				
 				<ion-item ng-show="wants.length == 0" >No Wants Currently Listed</ion-item>
-				<ion-item ng-repeat="want in wants" ng-class="{'affordable': want.amount < currentAmount, 'almost': want.amount > currentAmount && want.amount < (currentAmount+200), 'not-affordable': want.amount > (currentAmount+200)}" >n: {{want.name}} | a: {{ want.amount | currency }} <button style="float-right" class="button button-energized button-small" >Remove</button></ion-item>
+				
+				<ion-item ng-repeat="want in wants" ng-class="{'affordable': want.amount < currentAmount, 'almost': want.amount > currentAmount && want.amount < (currentAmount+200), 'not-affordable': want.amount > (currentAmount+200)}" >
+
+					<b>{{want.name | shortenText }}</b> |  {{ want.amount | currency }} <button class="button button-energized button-small remove" >Remove</button>
+				
+					<button ng-hide=" want.amount > currentAmount" class="button button-outline button-positive button-small purchase">Purchase</button>
+				
+				</ion-item>
 			</ion-list>
 		<!-- </ion-content> -->
 		<!-- <ion-content class="account-more-list" style="width: 50%; left: 0;" scroll="true"> -->
 			<ion-list class="goals-list">
 				<ion-item class="item-divider">Goals List </ion-item>			
 				<ion-item ng-show="goals.length == 0" >No Goals Currently Listed</ion-item>
-				<ion-item ng-repeat="goal in goals" ng-class="{'affordable': goal.amount < currentAmount, 'almost': goal.amount > currentAmount && goal.amount < (currentAmount +200), 'not-affordable': goal.amount > (currentAmount + 200)}">n: {{goal.name}} | a: {{goal.amount | currency}} <button style="float-right" class="button button-energized button-small" >Remove</button></ion-item>
+				<ion-item ng-repeat="goal in goals" ng-class="{'affordable': goal.amount < currentAmount, 'almost': goal.amount > currentAmount && goal.amount < (currentAmount +200), 'not-affordable': goal.amount > (currentAmount + 200)}"><b>{{goal.name}}</b> |  {{goal.amount | currency}} <button style="float-right" class="button button-energized button-small" >Remove</button></ion-item>
 			</ion-list>
 		<!-- </ion-content>	 -->
 	</ion-content>

@@ -9879,17 +9879,26 @@ ion-spinner {
 
 #account-more .affordable {
   color: #33cd5f;
-  font-weight: bolder;
-  font-size: 27px; }
+  font-size: 15px; }
 
 #account-more .almost {
   color: #ffc900;
-  font-weight: bolder;
-  font-size: 22px; }
+  font-size: 15px; }
 
 #account-more .not-affordable {
   color: #ef473a;
   font-weight: 18px; }
+
+#account-more .wants-list ion-item {
+  position: relative; }
+  #account-more .wants-list ion-item .remove {
+    position: absolute;
+    right: 5px;
+    top: 10px; }
+  #account-more .wants-list ion-item .purchase {
+    top: 10px;
+    position: absolute;
+    right: 63px; }
 
 #finance-view .ion-navicon-round {
   font-size: 19px; }
