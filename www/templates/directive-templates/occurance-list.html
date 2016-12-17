@@ -1,0 +1,9 @@
+<label class="item item-input " ng-class="{'item-select': extra }" >
+	<div class="input-label">{{ headerLabel }}</div>
+
+	<select ng-model=" modelType " ng-change="daysChange(this.modelType)">
+		<option value="daily" >Daily</option>
+		<option value="weekly" >Weekly</option>
+		<option value="monthly" ng-show="month">Monthly</option>
+	</select>
+</label>
