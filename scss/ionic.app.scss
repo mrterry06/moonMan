@@ -43,7 +43,10 @@ $moon-bg: #F6F7F9;
 	}
 
 
-
+	 .header-props {
+		text-align: center;
+		font-family: 'Baloo Bhai';
+	}
 
 
 /*END GLOBALS */
@@ -58,7 +61,7 @@ $moon-bg: #F6F7F9;
   } 
 
 .body, body {
-	background-color: #F6F7F9;
+	background-color: $moon-bg;
 }
 
 .item-divider {
@@ -68,8 +71,7 @@ $moon-bg: #F6F7F9;
 }
 
 .moon-header {
-	font-family: 'Baloo Bhai';
-	text-align: center;
+	@extend .header-props;
 }
 
 #bill {
@@ -112,15 +114,10 @@ $moon-bg: #F6F7F9;
 			}
 		}
 
-		.minus {
+		.minus, .plus {
 			font-size: $total-font-size;
 		}
 
-		.plus {
-
-			font-size: $total-font-size;
-
-		}
 	}
 
 }
@@ -151,7 +148,7 @@ $moon-bg: #F6F7F9;
 
 	.not-affordable {
 		color: $assertive;
-		font-weight: 18px;
+		font-size: 15px;
 	}
 
 	.wants-list , .goals-list {
@@ -250,6 +247,18 @@ $moon-bg: #F6F7F9;
 		  background-color: black;
 		  opacity: 0.2;
 		}
+	}
+}
+
+#contact {
+
+	h1 {
+		@extend .header-props;
+	}
+
+	p {
+		font-family: Georgia;
+		text-align: justify;
 	}
 }
 

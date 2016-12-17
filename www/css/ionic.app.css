@@ -9826,6 +9826,10 @@ ion-spinner {
   width: 60px;
   background-color: white; }
 
+.header-props, .moon-header, #contact h1 {
+  text-align: center;
+  font-family: 'Baloo Bhai'; }
+
 /*END GLOBALS */
 .active .modal-backdrop-bg {
   opacity: .5;
@@ -9838,10 +9842,6 @@ ion-spinner {
 .item-divider {
   background-color: #444;
   color: white; }
-
-.moon-header {
-  font-family: 'Baloo Bhai';
-  text-align: center; }
 
 #bill {
   width: inherit;
@@ -9866,9 +9866,7 @@ ion-spinner {
       margin-top: -5px; }
       #account .total-container .adjust::active {
         opacity: .4; }
-    #account .total-container .minus {
-      font-size: 35px; }
-    #account .total-container .plus {
+    #account .total-container .minus, #account .total-container .plus {
       font-size: 35px; }
 
 #account-more .account-more-list {
@@ -9887,7 +9885,7 @@ ion-spinner {
 
 #account-more .not-affordable {
   color: #ef473a;
-  font-weight: 18px; }
+  font-size: 15px; }
 
 #account-more .wants-list ion-item, #account-more .goals-list ion-item {
   position: relative; }
@@ -9940,6 +9938,10 @@ ion-spinner {
 #menu .list-item::active {
   background-color: black;
   opacity: 0.2; }
+
+#contact p {
+  font-family: Georgia;
+  text-align: justify; }
 
 #pinPad .colorKeys::active {
   opacity: 0.2; }
