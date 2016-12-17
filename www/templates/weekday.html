@@ -1,18 +1,7 @@
 <ion-view id="weekday" class="body">
 
 	<ion-content style="top: 120px;">	
-		<h1 class="moon-header" style="padding-bottom: 10px;">What day do the week do you get paid?</h1>
-		<label class="item item-select selector body">
-			<select class="days" ng-model="gather.paydayOfWeek"  >
-				<option value="0" >Monday</option>
-				<option value="1" >Tuesday</option>
-				<option value="2" >Wednsday</option>
-				<option value="3">Thursday</option>
-				<option value="4">Friday</option>
-				<option value="5">Saturday</option>
-				<option value="6">Sunday</option>
-			</select>
-		</label>
+		<weekdays-list header-style="moon-header" header="What day of the week do you get paid?" extra-class="item-select selector body"  model="gather.paydayOfWeek"></weekdays-list>
 			<h1 class="moon-header" style="padding-bottom: 5px;">How Often?</h1>	
 		<label class="item item-select selector body" >
 			<select class="often" ng-model="gather.reoccurance">
@@ -23,7 +12,7 @@
 		</label>
 
 
-		<a class="button button-block button-positive" ui-sref="goal" >Next</a>
+		<a class="button button-block button-positive" ui-sref="savings-current" >Next</a>
 	</ion-content>
 
 </ion-view>

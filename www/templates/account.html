@@ -38,27 +38,15 @@
 		</label>
 			
 		<label class="item item-input item-select" >
-			<div class="input-label">Reoccurence Time</div>
+			<div class="input-label">Reoccurance Time</div>
 
 			<select ng-model="needs.occurance">
 				<option value="daily" >Daily</option>
 				<option value="weekly" >Weekly</option>
 			</select>
 		</label>
-		<label class="item item-input item-select" ng-show="needs.occurance == 'weekly'" >
-			<div class="input-label">
-				What Day of the Week Does this Occur?
-			</div>
-			<select ng-model="needs.weekBegan">
-				<option value="0">Sunday</option>
-				<option value="1">Monday</option>
-				<option value="2">Tuesday</option>
-				<option value="3">Wednesday</option>
-				<option value="4">Thursday</option>
-				<option value="5">Friday</option>
-				<option value="6">Saturday</option>				
-			</select>
-		</label>
+		<weekdays-list ng-show="needs.occurance === 'weekly'" header="What day of the week does this occur?" extra-class="item-select"  model="needs.weekBegan"></weekdays-list>
+		
 	</div>
 	<button class="button button-positive button-block" ng-click="addNeed(needs)" >Add Need</button>
 	

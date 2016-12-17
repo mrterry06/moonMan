@@ -29,6 +29,10 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     });
   });
 
+  $scope.daysChange = function(val){
+    console.log(val);
+  }
+
 
   $scope.remove = function(index, array){
     if (array == "needs") {
@@ -256,9 +260,6 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 .controller('accountMore', function($scope, $state, accountMoreService, $ionicPopup){
   $scope.want = {};
   $scope.goal = {};
- // $scope.wants = [];
-  //$scope.goals = [];
-
 
   $scope.$on('$ionicView.beforeEnter', function(){
     $scope.finance.title = "Account";
@@ -268,10 +269,13 @@ angular.module('moonMan.controllers', ['moonMan.services'])
        $scope.goals = needsAndWants.goals || [];
 
     });
+
     localforage.getItem('userInfo').then(function(userInfo){
         $scope.currentAmount= userInfo.initial;
+        $scope.currentSavings = userInfo.savingsAmount;
         $scope.savings = userInfo.savings;
     });
+
   });
 
   $scope.isAccountMore = true;
@@ -294,7 +298,17 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.purchaseOrRemove = function(item, i, arrName, action){
     
-    
+      function purchaseType(purchaseType){
+
+        var selectedArr; 
+
+        arrName == 'wants' ? ( $scope.wants.splice(i, 1), selectedArr = $scope.wants ): ( $scope.goals.splice(i, 1), selectedArr = $scope.goals );
+
+         action === "Purchase" ? accountMoreService.purchase(item, selectedArr, arrName, purchaseType) : accountMoreService.remove(item, selectedArr , arrName);
+              
+      }
+
+
     
       $ionicPopup.show({
           title: action, 
@@ -303,12 +317,39 @@ angular.module('moonMan.controllers', ['moonMan.services'])
           buttons: [{text: 'Cancel'}, {text: '<b>' + action + '</b>',
             type: 'button-outline ' + ( action == "Purchase" ? "button-positive" : "button-assertive"),
             onTap: function(e){
-              var selectedArr; 
 
-              arrName == 'wants' ? ( $scope.wants.splice(i, 1), selectedArr = $scope.wants ): ( $scope.goals.splice(i, 1), selectedArr = $scope.goals );
 
-               action === "Purchase" ? accountMoreService.purchase(item, selectedArr, arrName) : accountMoreService.remove(item, selectedArr , arrName);
-              
+                $ionicPopup.show({
+                  title: "Purchase Type",
+                  scope: $scope,
+ 
+                  buttons: [{
+ 
+                    text: '<b>Savings</b>',
+ 
+                    type: 'button-positive',
+ 
+                    onTap: function(){
+ 
+                      purchaseType('savings');
+ 
+                    }
+ 
+                  },{
+ 
+                    text: '<b>Current</b>',
+ 
+                    type: 'button-outline button-balanced',
+ 
+                    onTap: function(){
+                      purchaseType('current');
+ 
+                    }
+ 
+                  }]
+                });
+
+             
             }
             
           }]
@@ -471,7 +512,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 
     // When going to production uncomment the  body  below
-  //    $http.post('ec2Address/mail').then(function(){
+  //    $http.post('ec2Address/mail', message).then(function(){
   //       $scope.mail = {};
   //       $scope.loading = false;
   //       $ionicPopup.alert({

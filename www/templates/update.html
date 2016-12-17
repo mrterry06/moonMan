@@ -49,9 +49,13 @@
 
 				</select>
 			</label>					
-			<label class="item item-input" ng-model="edit.goal">
+			<label class="item item-input">
 				<span class="input-label">Savings Goal:</span>
 				<input ng-model="edit.goal" type="number" placeholder="$5000..">
+			</label>
+			<label class="item item-input" ng-model="edit.currentSavings">
+				<span class="input-label">Current Savings Amount:</span>
+				<input ng-model="edit.savingsAmount" type="number" placeholder="$5000..">
 			</label>
 		</div>
 		<button class="button button-outline button-block button-assertive" ng-click="update(edit)">UPDATE</button>

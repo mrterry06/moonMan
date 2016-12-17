@@ -54,6 +54,11 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
       controller: 'gatherInfo'
     })
 
+    .state("savings-current",{
+      url: '/savings-current',
+      templateUrl: "templates/initial/how-much-savings.html",
+      controller: 'gatherInfo'
+    })
     .state("goal", {
       url: '/goal',
       templateUrl: 'templates/goal.html',

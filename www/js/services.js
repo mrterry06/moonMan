@@ -17,7 +17,8 @@ angular.module('moonMan.services', [])
           amount:  parseFloat(billScope.accumulatedInfo['payCheckAmount']),
           weekday: billScope.accumulatedInfo['paydayOfWeek'],
           goal: parseFloat(billScope.accumulatedInfo['savings']),
-          frequency: billScope.accumulatedInfo['reoccurance']
+          frequency: billScope.accumulatedInfo['reoccurance'],
+          currentSavings: parseFloat(billScope.accumulatedInfo['savingsAmount'])
         
         });
     
@@ -260,7 +261,7 @@ angular.module('moonMan.services', [])
                   val.paydayOfWeek = info.weekday;
                   val.savings = info.goal;
                   val.reoccurance = info.frequency;
-
+                  val.savingsAmount = info.savingsAmount;
                   return  localforage.setItem('userInfo', val).then(function(){
                   
                       console.log("Reset User Info");
@@ -320,17 +321,26 @@ angular.module('moonMan.services', [])
 
   }
 
-  function purchase(item, updatedArr, selectedArr){
+  function purchase(item, updatedArr, selectedArr, account){
 
      return localforage.getItem('needsAndWants').then(function(nAw){
         
-        return  localforage.getItem('userInfo').then(function(uI){
+        return  localforage.getItem('userInfo').then(function(ui){
           
           return localforage.getItem('profileInfo').then(function(pi){
               
               nAw[selectedArr] = updatedArr;
-              uI.initial -= parseFloat(item.amount);
-              pi.current -= parseFloat(item.amount);
+              if(account == 'current'){
+
+                ui.initial -= parseFloat(item.amount);
+                pi.current -= parseFloat(item.amount); 
+
+              } else {
+                ui.savingsAmount -= item.amount;
+                pi.savingsAmount -= item.amount;
+              }
+            
+              
               localforage.setItem('userInfo', uI);
               localforage.setItem('profileInfo', pi);
 
