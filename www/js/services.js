@@ -20,9 +20,10 @@ angular.module('moonMan.services', [])
   billScope.accumulatedInfo = {};
 
   billScope.$watchCollection('accumulatedInfo', function(){
-     console.log(billScope.accumulatedInfo);
+    
     if (billScope.accumulatedInfo.hasOwnProperty('savings')){
-        
+        console.log("Were here");
+        console.log(billScope.accumulatedInfo);
         localforage.setItem('profileInfo', {
          
           current: billScope.accumulatedInfo['initial'],
@@ -240,20 +241,51 @@ angular.module('moonMan.services', [])
           // }
 
           userObj.reoccurance == 'weekly' ? dayIncrement = 7 : ( userObj.reoccurance == 'bi-weekly' ? dayIncrement = 14 : dayIncrement = 30);
-      
-         while (lastPayDate <= dayOfYear){
-    
-            lastPayDate += dayIncrement;
-    
-            if (lastPayDate <= dayOfYear){
-    
-              pay += check;
-              pay -= deductedAmount;
-              savingsIncrease += deductedAmount;
-    
-            }
+          if(lastPayDate > 350 && dayOfYear < 20){
+            dayOfYear = 365 + dayOfYear;
+            while(lastPayDate <= dayOfYear){
 
-         }
+
+               lastPayDate += dayIncrement;
+
+               if(lastPayDate <= dayOfYear){
+                 pay += check;
+                 pay -= deductedAmount;
+                 savingsIncrease += deductedAmount;
+
+               }
+
+            }
+             lastPayDate -= 365;
+             dayOfYear -= 365;
+
+          } else if( lastPayDate < 30 && dayOfYear > 350){
+
+              console.log("Caught UP");
+
+          } else {
+
+             while (lastPayDate <= dayOfYear){
+
+
+        
+                lastPayDate += dayIncrement;
+        
+                if (lastPayDate <= dayOfYear){
+        
+                  pay += check;
+                  pay -= deductedAmount;
+                  savingsIncrease += deductedAmount;
+        
+                }
+
+             }
+
+             if(lastPayDate > 365 ){
+              lastPayDate -= 365;
+             }
+
+          }
 
            userObj.initial += pay;
            userObj.lastPayDate = lastPayDate;

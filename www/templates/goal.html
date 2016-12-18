@@ -9,7 +9,7 @@
 		<div>
 			<label style="height: 75px;" class="item item-input item-select">
 				<select style="font-size: 30px; padding-right: 45%;" ng-model="gather.savingsPercentage">
-					<option ng-repeat="percent in percentages" value="percent.float" ng-selected="percent.float == 0">{{ percent.percent }}</option>
+					<option ng-repeat="percent in percentages" value="{{ percent.float }}" ng-selected="percent.float == 0">{{ percent.percent }}</option>
 				</select>
 			</label>			
 		</div>
