@@ -18,8 +18,8 @@ angular.module('moonMan.services', [])
           weekday: billScope.accumulatedInfo['paydayOfWeek'],
           goal: parseFloat(billScope.accumulatedInfo['savings']),
           frequency: billScope.accumulatedInfo['reoccurance'],
-          currentSavings: parseFloat(billScope.accumulatedInfo['savingsAmount'])
-        
+          currentSavings: parseFloat(billScope.accumulatedInfo['savingsAmount']),
+          savingsPercentage: billScope.accumulatedInfo['savingsPercentage']        
         });
     
     }
@@ -107,11 +107,11 @@ angular.module('moonMan.services', [])
 
           }
           
-          if(!billScope.accumulatedInfo["dayOfYear"]){
+          if (!billScope.accumulatedInfo["dayOfYear"]){
             billScope.accumulatedInfo["dayOfYear"] = userSignUpDate;
           }
 
-          for(var key in obj){
+          for (var key in obj){
             if(!billScope.accumulatedInfo.hasOwnProperty(key)){
               billScope.accumulatedInfo[key] = obj[key];
             }
@@ -140,6 +140,23 @@ angular.module('moonMan.services', [])
             console.log("Initial property is being changed");
           
           });
+        },
+        getPercentages: function(){
+          var percentages = [];
+
+          for(var i = 0; i < 61; i++){
+             if(i == 2 || i % 5 == 0){
+          
+                percentages.push({
+                  percent: i + "%",
+                  float: (i / 100),
+          
+                });
+             }
+          }
+
+          return percentages;
+
         }
 
       }
@@ -213,9 +230,6 @@ angular.module('moonMan.services', [])
 
 .factory('accountService', function(){
 
-    var days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-
-
 
     return {
       resetNeeds: function(objArray){
@@ -230,13 +244,16 @@ angular.module('moonMan.services', [])
         });
       },
       returnDays: function(){
+        var days = [];
+        for(var i = 1; i <= 31; i++){
+          days.push(i);
+        }
         return days;
       }
     }
 })
 
-.factory('updateService', function($rootScope){
-
+.factory('updateService', function($rootScope, billService){
 
 
 
@@ -252,7 +269,7 @@ angular.module('moonMan.services', [])
       return localforage.setItem('profileInfo', info)
             .then(function(){
               
-              console.log("stored to profileInfo");
+              console.log("stored profileInfo");
               
               return localforage.getItem('userInfo').then(function(val){
 
@@ -262,6 +279,7 @@ angular.module('moonMan.services', [])
                   val.savings = info.goal;
                   val.reoccurance = info.frequency;
                   val.savingsAmount = info.savingsAmount;
+                  val.savingsPercentage = info.savingsPercentage;
                   return  localforage.setItem('userInfo', val).then(function(){
                   
                       console.log("Reset User Info");
@@ -276,7 +294,9 @@ angular.module('moonMan.services', [])
               console.warn(err);
               return false;
             });
-    }
+    },
+
+    getPercentages: billService.getPercentages()
   }
 })
 
@@ -383,11 +403,31 @@ angular.module('moonMan.services', [])
 
 })
 
-.factory('extraService', function($rootScope, $ionicModal){
+.factory('extraService', function($rootScope, $ionicModal, $ionicPopup){
 
     var extraScope = $rootScope.$new(true);
     var extraModal;
     extraScope.extra = {};
+
+      function extraPayment(paymentType){
+
+       return localforage.getItem('userInfo').then(function(ui){
+
+          return localforage.getItem('profileInfo').then(function(pi){
+
+              ui.initial -= parseFloat(extraScope.extra.amount);
+              pi.current -= parseFloat(extraScope.extra.amount);
+
+
+              localforage.setItem('userInfo', ui); 
+              localforage.setItem('profileInfo', pi);
+          });
+
+       });
+
+      }
+
+
 
       $ionicModal.fromTemplateUrl('templates/account/extra.html',{
         animation: 'slide-in-up',
@@ -401,9 +441,43 @@ angular.module('moonMan.services', [])
         extraModal.remove();
       });
 
-       extraScope.closeModal = function(){
-          extraModal.hide();
+       extraScope.submitPayment = function(){
+          
+          $ionicPopup.show({
+            title: "Confirmation",
+            template: "Are you sure you want to add Extra Spending?",
+            scope: extraScope,
+            buttons: [{text: "Cancel"
+            }, {
+              text: "Confirm",
+              type:"button-positive button-outline",
+              onTap: function(){
 
+                  $ionicPopup.show({
+                    title: "Payment",
+                    template: "Choose savings or checking",
+                    scope: extraScope,
+                    buttons: [{ 
+                      text:"Savings",
+                      type: "button-positive",
+                      onTap: function(){
+                        extraPayment('savings');
+                      }
+                      }, {
+                       text: "Current",
+                       type: "button-balanced button-outline",
+                       onTap: function(){
+                        extraPayment('current');
+                       }
+                      }]
+                  });
+              }
+
+            }]
+          });
+
+          extraScope.extra = {};
+          extraModal.hide();
        } 
       return {
 

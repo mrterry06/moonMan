@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.good751432" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Good Deeds</name>
+  <name>MoonMan</name>
   <description>
-        good deeds application
+        Money Management Application for IOS and Andriod
     </description>
   <author email="mrterry06@gmail.com" href="http://example.com.com/">
-     Scott TErry
+     Scott Terry
     </author>
   <content src="index.html"/>
   <access origin="*"/>

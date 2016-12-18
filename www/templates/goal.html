@@ -5,6 +5,14 @@
 		<div style="padding: 20px 20px 20px 20px;">
 			<p ng-show="gather.savings" >$</p><input class="body" ng-model="gather.savings"  style="font-size: 20px; width: 100%; padding: 20px 20px 20px 20px; border-right: none; border-left: none; border-top: none;  border-bottom-color: black; text-align: center;" placeholder="Enter Savings Goal">
 		</div>
+	<h2 align="center" class="moon-header">What percentage do you want taken out of your paycheck?</h2>	
+		<div>
+			<label style="height: 75px;" class="item item-input item-select">
+				<select style="font-size: 30px; padding-right: 45%;" ng-model="gather.savingsPercentage">
+					<option ng-repeat="percent in percentages" value="percent.float" ng-selected="percent.float == 0">{{ percent.percent }}</option>
+				</select>
+			</label>			
+		</div>
 	<a class="button button-block button-positive" ui-sref="finance.account" >Get To Managing!</a>
 	</ion-content>
 

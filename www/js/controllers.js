@@ -29,11 +29,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     });
   });
 
-  $scope.daysChange = function(val){
-    console.log(val);
-  }
-
-
+ 
   $scope.remove = function(index, array){
     if (array == "needs") {
       $scope.listNeeds.splice(index, 1);
@@ -318,6 +314,10 @@ angular.module('moonMan.controllers', ['moonMan.services'])
             type: 'button-outline ' + ( action == "Purchase" ? "button-positive" : "button-assertive"),
             onTap: function(e){
 
+              if(action !== "Purchase"){
+                purchaseType();
+                return;
+              }
 
                 $ionicPopup.show({
                   title: "Purchase Type",
@@ -361,11 +361,16 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 })
 
 .controller('updateCtrl', function($scope, $state, updateService, $ionicPopup){
+
+
+
   
 
   $scope.$on("$ionicView.beforeEnter", function(){
     $scope.finance.title = "Update";
-     
+  
+    $scope.percentages = updateService.getPercentages;
+
      updateService.grabInfo().then(function(val){
      
        $scope.edit = val;
@@ -397,7 +402,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.gather = {};
 
-
+  $scope.percentages = billService.getPercentages();
 
   $scope.$on("$ionicView.leave", function(){
     
