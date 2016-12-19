@@ -1,0 +1,73 @@
+<ion-view id="update" >
+	<ion-content class="has-header">
+		<h1 class="moon-header" >Update Information Simultaneously</h1>	
+		<div class="list list-inset">
+			<h1 class="item item-divider">Personal Information:</h1>
+			<label class="item item-input" >
+				<input type="text" ng-model="edit.name" placeholder="Name">
+			</label>
+			<label class="item item-input">
+				<input type="number" ng-model="edit.age" placeholder="Age" >	
+			</label>
+			<label class="item item-input">
+				<input type="text" ng-model="edit.job"  placeholder="Job/Career">
+			</label>
+		</div>	
+		<div class="list">
+			<h1 class="item item-divider">Edit Finance Information:</h1>
+			<label class="item item-input">
+				<span class="input-label" >Current Amount:</span>
+				<input type="text" ng-model="edit.current" placeholder="$243..">
+			</label>
+			<label class="item item-input">
+				<span class="input-label" >Pay Check Amount:</span>
+				<input type="number" ng-model="edit.amount" placeholder="$425.23..." >
+			</label>
+<!-- 			<label class="item item-input item-select">
+				<div class="input-label" >
+					Weekday Pay Date:
+				</div>
+				<select ng-model="edit.weekday">
+					<option value="0" >Sunday</option>
+					<option value="1" >Monday</option>
+					<option value="2" >Tuesday</option>
+					<option value="3" >Wednesday</option>
+					<option value="4" >Thursday</option>
+					<option value="5" >Friday</option>
+					<option value="6" >Saturday</option>
+				</select>
+			</label> -->
+			<weekdays-list header="Weekday Pay Date:" extra-class="item-select"  model="edit.weekday"></weekdays-list>
+			<label class="item item-input item-select">
+				<div class="input-label" >
+					Pay Frequency:
+				</div>
+				<select ng-model="edit.frequency" placeholder="Pay Frequency">
+					<option value="7" >Weekly</option>
+					<option value="14" >Bi-Weekly</option>
+					<option value="30" >Monthly</option>
+
+				</select>
+			</label>					
+			<label class="item item-input">
+				<span class="input-label">Savings Goal:</span>
+				<input ng-model="edit.goal" type="number" placeholder="$5000..">
+			</label>
+			<label class="item item-input" ng-model="edit.currentSavings">
+				<span class="input-label">Current Savings Amount:</span>
+				<input ng-model="edit.savingsAmount" type="number" placeholder="$5000..">
+			</label>
+			<label class="item item-input item-select">
+				<div class="input-label" >
+				 	Savings Deduction Percentage:
+				</div>
+				<select ng-model="edit.savingsPercentage" >
+					<option ng-repeat="percent in percentages" value="percent.float" > {{ percent.percent }}</option>
+				</select>
+			</label>
+		</div>
+		<button class="button button-outline button-block button-assertive" ng-click="update(edit)">UPDATE</button>
+
+	</ion-content>
+	<ion-spinner ng-show="loading" icon="lines"></ion-spinner>
+</ion-view>
