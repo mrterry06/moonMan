@@ -41,8 +41,8 @@
 			<div class="input-label">Reoccurance Time</div>
 
 			<select ng-model="needs.occurance">
-				<option value="daily" >Daily</option>
-				<option value="weekly" >Weekly</option>
+				<option value="1" >Daily</option>
+				<option value="7" >Weekly</option>
 			</select>
 		</label>
 		<weekdays-list ng-show="needs.occurance === 'weekly'" header="What day of the week does this occur?" extra-class="item-select"  model="needs.weekBegan"></weekdays-list>

@@ -14,25 +14,34 @@ angular.module('moonMan.services', [])
 
 .factory('billService', function($rootScope, $ionicModal, $q){
 
-  var billScope = $rootScope.$new(true);
-  var billModal;
+  var billScope = $rootScope.$new(true),
+  
+  billModal;
+  
   billScope.bill = {};
+  
   billScope.accumulatedInfo = {};
 
   billScope.$watchCollection('accumulatedInfo', function(){
     
     if (billScope.accumulatedInfo.hasOwnProperty('savings')){
-        console.log("Were here");
-        console.log(billScope.accumulatedInfo);
+        
         localforage.setItem('profileInfo', {
          
           current: billScope.accumulatedInfo['initial'],
+   
           amount:  parseFloat(billScope.accumulatedInfo['payCheckAmount']),
+   
           weekday: billScope.accumulatedInfo['paydayOfWeek'],
+   
           goal: parseFloat(billScope.accumulatedInfo['savings']),
+   
           frequency: billScope.accumulatedInfo['reoccurance'],
+   
           currentSavings: parseFloat(billScope.accumulatedInfo['savingsAmount']),
+   
           savingsPercentage: billScope.accumulatedInfo['savingsPercentage']        
+        
         });
     
     }
@@ -98,36 +107,53 @@ angular.module('moonMan.services', [])
         init: function(obj){
 
           console.log(obj);
-          var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-          var yearFirstDay = Math.floor(timeStamp / 86400000);
-          var today = Math.ceil((new Date().getTime())/ 86400000);
-          var userSignUpDate = today - yearFirstDay;
+          var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
+
+          yearFirstDay = Math.floor(timeStamp / 86400000),
+          
+          today = Math.ceil((new Date().getTime())/ 86400000),
+          
+          userSignUpDate = today - yearFirstDay;
 
 
           if (obj.hasOwnProperty('initial') && typeof obj['initial'] == "string"){
               
                 obj['initial'] = parseFloat(obj['initial']);
+          
                billScope.accumulatedInfo['initial'] = obj['initial'];
+          
           }
 
         
           if(obj['lastPayDate'] && typeof obj['lastPayDate'] !== Number){
+          
             var strDate = obj['lastPayDate'].toString(),
+          
             strMonth = obj['lastPayDate'].getMonth(), 
+          
              arr = strDate.split(" "),
+          
               realDate = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
+          
             billScope.accumulatedInfo["lastPayDate"] = (Math.ceil((new Date(realDate).getTime())/ 86400000)) - yearFirstDay;
 
           }
           
           if (!billScope.accumulatedInfo["dayOfYear"]){
+          
             billScope.accumulatedInfo["dayOfYear"] = userSignUpDate;
+          
           }
 
+          //Checking for missing properties
           for (var key in obj){
+          
             if(!billScope.accumulatedInfo.hasOwnProperty(key)){
+          
               billScope.accumulatedInfo[key] = obj[key];
+          
             }
+          
           }
 
 
@@ -201,10 +227,13 @@ angular.module('moonMan.services', [])
 
 .factory('currencyProcessing', function($rootScope){
 
-   var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-   var yearFirstDay = Math.floor(timeStamp / 86400000);
-   var today = Math.ceil((new Date().getTime())/ 86400000);
-   var dayOfYear = today - yearFirstDay;
+   var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
+   
+   yearFirstDay = Math.floor(timeStamp / 86400000),
+   
+   today = Math.ceil((new Date().getTime())/ 86400000),
+   
+   dayOfYear = today - yearFirstDay;
 
 
   function getUserInfo(){
@@ -227,69 +256,46 @@ angular.module('moonMan.services', [])
       getUserInfo().then(function(userObj){
 
           var pay = 0,  
+          
           check = parseInt(userObj.payCheckAmount),
-          lastPayDate = userObj.lastPayDate, dayIncrement,
+          
+          lastPayDate = userObj.lastPayDate, 
+          
+          dayIncrement = parseInt(userObj.reoccurance),
+          
           deductedAmount = parseFloat(userObj.savingsPercentage) * userObj.payCheckAmount,
+          
           savingsIncrease = 0; 
 
-          // if (userObj.reoccurance == 'weekly'){
-          //   dayIncrement =7;
-          // } else if (userObj.reoccurance =="bi-weekly"){
-          //   dayIncrement = 14;
-          // } else {
-          //   dayIncrement = 30;
-          // }
 
-          userObj.reoccurance == 'weekly' ? dayIncrement = 7 : ( userObj.reoccurance == 'bi-weekly' ? dayIncrement = 14 : dayIncrement = 30);
-          if(lastPayDate > 350 && dayOfYear < 20){
-            dayOfYear = 365 + dayOfYear;
-            while(lastPayDate <= dayOfYear){
+          if (lastPayDate > 335 && dayOfYear < 20) dayOfYear += 365;
 
+          if (lastPayDate < 30 && dayOfYear > 335) return;
 
-               lastPayDate += dayIncrement;
-
-               if(lastPayDate <= dayOfYear){
-                 pay += check;
-                 pay -= deductedAmount;
-                 savingsIncrease += deductedAmount;
-
-               }
-
-            }
-             lastPayDate -= 365;
-             dayOfYear -= 365;
-
-          } else if( lastPayDate < 30 && dayOfYear > 350){
-
-              console.log("Caught UP");
-
-          } else {
-
-             while (lastPayDate <= dayOfYear){
-
-
-        
-                lastPayDate += dayIncrement;
-        
-                if (lastPayDate <= dayOfYear){
-        
-                  pay += check;
-                  pay -= deductedAmount;
-                  savingsIncrease += deductedAmount;
-        
-                }
-
-             }
-
-             if(lastPayDate > 365 ){
-              lastPayDate -= 365;
+          while (lastPayDate <= dayOfYear){
+          
+             lastPayDate += dayIncrement;
+          
+             if (lastPayDate <= dayOfYear){
+          
+               pay += check;
+               pay -= deductedAmount;
+               savingsIncrease += deductedAmount;
+          
              }
 
           }
 
-           userObj.initial += pay;
-           userObj.lastPayDate = lastPayDate;
-           userObj.savingsAmount += savingsIncrease;
+          if (lastPayDate > 365 )  lastPayDate -= 365;
+                        
+          if (dayOfYear > 365)   dayOfYear -= 365;
+
+
+          userObj.initial += pay;
+          
+          userObj.lastPayDate = lastPayDate;
+          
+          userObj.savingsAmount += savingsIncrease;
 
           localforage.setItem('userInfo', userObj);
 
@@ -318,6 +324,7 @@ angular.module('moonMan.services', [])
 
 
     return {
+
       resetNeeds: function(objArray){
     
         localforage.setItem('needs', objArray).then(function(){
@@ -326,6 +333,7 @@ angular.module('moonMan.services', [])
     
         });
       },
+
       getNeeds: function(){
     
         return  localforage.getItem('needs').then(function(value){
@@ -335,6 +343,7 @@ angular.module('moonMan.services', [])
           return value;
         });
       },
+
       returnDays: function(){
     
         var days = [];
@@ -398,12 +407,19 @@ angular.module('moonMan.services', [])
               return localforage.getItem('userInfo').then(function(val){
 
                   val.initial = info.current;
+          
                   val.payCheckAmount = info.amount;
+          
                   val.paydayOfWeek = info.weekday;
+          
                   val.savings = info.goal;
+          
                   val.reoccurance = info.frequency;
+          
                   val.savingsAmount = info.savingsAmount;
+          
                   val.savingsPercentage = info.savingsPercentage;
+          
                   return  localforage.setItem('userInfo', val).then(function(){
                   
                       console.log("Reset User Info");
@@ -415,8 +431,11 @@ angular.module('moonMan.services', [])
                });
 
             }).catch(function(err){
+          
               console.warn(err);
+          
               return false;
+          
             });
     },
 
@@ -541,9 +560,13 @@ angular.module('moonMan.services', [])
   return {
 
      storeWants: storingWants,
+    
      getAllInfo: grabInfo,
+    
      storeGoals: storingGoals,
+    
      purchase: purchase,
+    
      remove: remove
 
   }
@@ -569,8 +592,8 @@ angular.module('moonMan.services', [])
 
 .factory('extraService', function($rootScope, $ionicModal, $ionicPopup){
 
-    var extraScope = $rootScope.$new(true);
-    var extraModal;
+    var extraScope = $rootScope.$new(true),
+    extraModal;
     extraScope.extra = {};
 
       function extraPayment(paymentType){
@@ -609,30 +632,46 @@ angular.module('moonMan.services', [])
           
           $ionicPopup.show({
             title: "Confirmation",
+    
             template: "Are you sure you want to add Extra Spending?",
+    
             scope: extraScope,
+    
             buttons: [{text: "Cancel"
             }, {
               text: "Confirm",
               type:"button-positive button-outline",
+              
               onTap: function(){
 
                   $ionicPopup.show({
+                   
                     title: "Payment",
+                   
                     template: "Choose savings or checking",
+                   
                     scope: extraScope,
+                   
                     buttons: [{ 
+                   
                       text:"Savings",
+                   
                       type: "button-positive",
+                   
                       onTap: function(){
                         extraPayment('savings');
                       }
+                   
                       }, {
+                   
                        text: "Current",
+
                        type: "button-balanced button-outline",
+                       
                        onTap: function(){
                         extraPayment('current');
                        }
+                      
                       }]
                   });
               }
