@@ -120,6 +120,22 @@ $moon-bg: #F6F7F9;
 
 	}
 
+	.first-list , .second-list {
+		
+		ion-item {
+			position: relavtive;
+
+			button {
+			position: absolute;
+			
+			right: 10px;
+			top: 10px;
+
+			}
+		}
+		
+	}
+
 }
 
 #account-more {

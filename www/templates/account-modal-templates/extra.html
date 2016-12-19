@@ -1,4 +1,4 @@
-<ion-modal-view id="extra-spending" >
+<ion-modal-view id="extra-spending" style="border-radius: 8px;" >
 	<ion-content>
 		<h2 class="moon-header" >Sorry That Happened<br> :( How Much was it?</h2>
 
@@ -17,7 +17,7 @@
 				<ion-radio ng-model="feeling" >Dreadedful</ion-radio>
 				<ion-radio ng-model="feeling">I Feel Like A Dumbass</ion-radio>
 			</div>
-			<button class="button button-block button-positive" ng-click="submitPayment()" >Submit</button>	
+			<button class="button button-block button-positive" ng-click="submitPayment()" ng-disabled="!extra.amount">Submit</button>	
 		</div>
 	</ion-content>
 

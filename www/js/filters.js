@@ -10,4 +10,16 @@ angular.module('moonMan.filters', [])
 
 		return text;
 	}
+})
+.filter('occurTrans', function(){
+
+	return function(num){
+		
+		num = parseInt(num);
+		
+		if(num == 1) return "Daily";
+
+		if(num == 7) return "Weekly";
+		
+	}
 });

@@ -9868,6 +9868,12 @@ ion-spinner {
         opacity: .4; }
     #account .total-container .minus, #account .total-container .plus {
       font-size: 35px; }
+  #account .first-list ion-item, #account .second-list ion-item {
+    position: relavtive; }
+    #account .first-list ion-item button, #account .second-list ion-item button {
+      position: absolute;
+      right: 10px;
+      top: 10px; }
 
 #account-more .account-more-list {
   top: 120px; }

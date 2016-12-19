@@ -1,20 +1,29 @@
-<ion-modal-view id="bill">
-	
-<h1 class="moon-header">What is the Bill?</h1>
+<ion-modal-view id="bill"  style="border-radius: 8px;" >
+<ion-content>	
+	<h1 class="moon-header">What is the Bill?</h1>
 
-	<div class="list">
-		<div class="item item-divider">
-			Insert Bills
-		</div>
-		<label class="item item-input">
-			<input placeholder="Bill Name.." type="text" ng-model="bill.name" >
-		</label>
-		<label class="item item-input">	
-			<span ng-show="bill.amount">$</span>  <input placeholder="Bill Amount"  type="number" ng-model="bill.amount">
-		</label>
-		<label class="item item-input">	
-		<input  type="date" ng-model="bill.date" >
-		</label>
-	</div>	
-	<button class="button button-positive button-block" ng-click="addBill(bill)">Add Bill</button>
+		<div class="list">
+			<div class="item item-divider">
+				Insert Bills
+			</div>
+			<label class="item item-input">
+				<input placeholder="Bill Name.." type="text" ng-model="bill.name" >
+			</label>
+			<label class="item item-input">	
+				<span ng-show="bill.amount">$</span>  <input placeholder="Bill Amount"  type="number" ng-model="bill.amount">
+			</label>
+			<label class="item item-input">	
+			<input on-touch="billDate=true" type="date" ng-model="bill.date" >
+			</label>
+			<label class="item item-input item-select" >
+				<div class="input-label">Type of Occurance</div>
+
+				<select ng-model="bill.occurance">
+					<option value="1" >One Time</option>
+					<option value="2" >Monthly</option>
+				</select>
+			</label>
+		</div>	
+		<button class="button button-positive button-block" ng-disabled="!bill.name || !bill.amount || !billDate || !bill.occurance" ng-click="addBill(bill)">Add Bill</button>
+</ion-content>	
 </ion-modal-view>
