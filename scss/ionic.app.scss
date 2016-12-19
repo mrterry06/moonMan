@@ -123,6 +123,7 @@ $moon-bg: #F6F7F9;
 }
 
 #account-more {
+	@extend .body;
 
 	.account-more-list {
 		top: 120px;
@@ -183,6 +184,8 @@ $moon-bg: #F6F7F9;
 
 #weekday {
 
+	@extend .body;
+
 	label {
 		border-top: none;
 		padding: 20px 20px 20px 20px;
@@ -190,14 +193,48 @@ $moon-bg: #F6F7F9;
 
 	}
 
+	weekdays-list {
+
+		label {
+			display: block;
+			padding: 5px 0 0 10px;
+
+		}
+
+		.moon-header {
+			color: black;
+			font-size: 20px;
+			padding-bottom: 15px;
+		}
+
+
+		select {
+			display: block;
+			position: inherit;
+			background: none;
+			position: inherit;
+			margin-left: 20px;
+			padding: 0 0 0 0 !important;
+			width: 100%;
+			text-align-last: center;
+
+		}
+	}
+
 	.item {
 		overflow: visible;
+	}
+
+	.often {
+		max-width: 100%;
+		width: 100%;
+		text-align-last: center;
 	}
 
 
 	.item-select select {
 
-		font-size: 45px !important;
+		font-size: 35px !important;
 		top: -20px;
 		padding: 0px 51px 0 13px;
 	}
@@ -263,6 +300,7 @@ $moon-bg: #F6F7F9;
 }
 
 #pinPad {
+	@extend .body;
 	.colorKeys {
 
 		&::active {

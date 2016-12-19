@@ -7,7 +7,7 @@ angular.module("moonMan.directives", [])
 		restrict: 'E',
 		scope: {
 			'extraClasses': '@extraClass',
-			'modelType': '@model',
+			'modelType': '=model',
 			'headerLabel': '@header',
 			'headerStyle': '@headerStyle'
 		},
@@ -25,7 +25,7 @@ angular.module("moonMan.directives", [])
 		restrict: 'E',
 		scope: {
 			'extra' : '@extraClass',
-			'modelType': '@model',
+			'modelType': '=model',
 			'headerLabel': '@header',
 			'month': '@monthly'
 		},

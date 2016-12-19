@@ -470,6 +470,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.gather = {};
 
+
   $scope.percentages = billService.getPercentages();
 
   $scope.$on("$ionicView.leave", function(){

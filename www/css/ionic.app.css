@@ -9836,7 +9836,7 @@ ion-spinner {
   transition: opacity 300ms ease-in-out;
   background-color: #000; }
 
-.body, body {
+.body, #account-more, #weekday, #pinPad, body {
   background-color: #F6F7F9; }
 
 .item-divider {
@@ -9905,11 +9905,35 @@ ion-spinner {
   border-top: none;
   padding: 20px 20px 20px 20px; }
 
+#weekday weekdays-list label {
+  display: block;
+  padding: 5px 0 0 10px; }
+
+#weekday weekdays-list .moon-header {
+  color: black;
+  font-size: 20px;
+  padding-bottom: 15px; }
+
+#weekday weekdays-list select {
+  display: block;
+  position: inherit;
+  background: none;
+  position: inherit;
+  margin-left: 20px;
+  padding: 0 0 0 0 !important;
+  width: 100%;
+  text-align-last: center; }
+
 #weekday .item {
   overflow: visible; }
 
+#weekday .often {
+  max-width: 100%;
+  width: 100%;
+  text-align-last: center; }
+
 #weekday .item-select select {
-  font-size: 45px !important;
+  font-size: 35px !important;
   top: -20px;
   padding: 0px 51px 0 13px; }
 

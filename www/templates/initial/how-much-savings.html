@@ -5,7 +5,7 @@
 		<div style="padding: 20px 20px 20px 20px;">
 			<p ng-show="gather.savingsAmount" >$</p><input class="body" ng-model="gather.savingsAmount"  style="font-size: 20px; width: 100%; padding: 20px 20px 20px 20px; border-right: none; border-left: none; border-top: none;  border-bottom-color: black; text-align: center;" placeholder="Enter Savings Goal">
 		</div>
-	<a class="button button-block button-positive" ui-sref="goal" >Set a Savings Goal!</a>
+	<a class="button button-block button-positive" ui-sref="goal" ng-disabled="!gather.savingsAmount" >Set a Savings Goal!</a>
 	</ion-content>
 
 
