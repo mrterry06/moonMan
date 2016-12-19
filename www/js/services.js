@@ -8,6 +8,7 @@ angular.module('moonMan.services', [])
 |_____/_/    \_\_|  |______| |_|  |_/_/    \_\_| \_|_____/|______|______|_|  \_*/ 
 
 .factory('dateHandler', function($rootScope){
+  var months = ["jan", 'feb', 'mar', 'april', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 
 
@@ -20,9 +21,13 @@ angular.module('moonMan.services', [])
       
       if (date) desiredDate = Math.ceil((new Date(date).getTime())/ 86400000);
       if (!date) desiredDate = Math.ceil((new Date().getTime())/ 86400000);
+      
+      desiredDate -= yearFirstDay;
+      while (desiredDate > 366){
+        desiredDate -= 365;
+      }
 
-      return desiredDate - yearFirstDay;
-
+      return desiredDate;
     },
 
     getToday: function(){
@@ -36,9 +41,35 @@ angular.module('moonMan.services', [])
         if(tomorrow >=366) return tomorrow - 365;
         return tomorrow;
         
+    },
+    reformatDate: function(date){
+      
+        var day = date.getDate(),
+        month = date.getMonth(),
+        year = date.getFullYear(),
+        actualDate = month + "-" + day + "-" + year;
+
+
+        return this.dateParser(actualDate);
+    },
+    getDateFromDay: function(year, day){
+      
+        return new Date(new Date(year, 0).setDate(day));
+
+    },
+    updateDate: function(oldDateObj, day){
+
+      var oldYear = oldDateObj.getFullYear(); 
+      if(day > 365 ){
+        
+        oldYear += 1;
+        day -= 365;
+      
+      }    
+
+      return this.getDateFromDay( oldYear , day);
+
     }
-
-
 
 
 
@@ -58,7 +89,7 @@ angular.module('moonMan.services', [])
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------'  */
 
-.factory('billService', function($rootScope, $ionicModal, $q){
+.factory('billService', function($rootScope, $ionicModal, $q, dateHandler){
 
 
 
@@ -110,24 +141,26 @@ angular.module('moonMan.services', [])
       });
 
       billScope.addBill = function(bill){
+
+        bill.nextPayment = dateHandler.reformatDate(bill.date);
         
-        localforage.getItem("bills")
-          .then(function(arr){
+        localforage.getItem("bills").then(function(arr){
         
-              if (!arr)  arr = []; 
+            if (!arr)  arr = []; 
 
-              arr[arr.length] = bill;
+            arr[arr.length] = bill;
 
-          localforage.setItem("bills", arr).then(function(){
+            localforage.setItem("bills", arr).then(function(){
 
-            console.log("bills successfully stored");
+                $rootScope.$emit("closedWindow");
+               
+                billScope.bill = {};
+                billModal.hide();
 
-          });
+            });
 
         });
 
-        billScope.bill = {};
-        billModal.hide();
   }
 
 
@@ -232,6 +265,7 @@ angular.module('moonMan.services', [])
              if(i == 2 || i % 5 == 0){
           
                 percentages.push({
+
                   percent: i + "%",
                   float: (i / 100),
           
@@ -340,7 +374,70 @@ angular.module('moonMan.services', [])
 
       });
 
-    }
+    },
+    processBills: function(){
+
+    return  localforage.getItem('bills').then(function(billArr){
+
+        if (!billArr.length) { console.log("No bills to process"); return; }
+
+        return localforage.getItem('userInfo').then(function(userProfile){
+
+            var newBillArr =  billArr.map(function(bill){
+
+                var today = dateHandler.getToday();
+
+                if (bill.nextPayment < 35 && today > 330) bill.nextPayment += 365;
+
+                if (bill.nextPayment < today ){
+                
+                   bill.nextPayment += 30;
+                   userProfile.initial -= bill.amount;
+                  
+                  if (bill.occurance == 1) bill.paid = true;
+
+                  bill.date = dateHandler.updateDate(bill.date, bill.nextPayment);
+
+                }
+
+                if (bill.nextPayment > 365) bill.nextPayment -= 365;
+
+                return bill;
+
+
+            }).filter(function(bill){
+
+                return !bill.hasOwnProperty("paid");
+            
+            });
+
+
+            localforage.setItem('bills', newBillArr);
+
+            return localforage.setItem('userInfo', userProfile).then(function(ui){
+                
+               return localforage.getItem('profileInfo').then(function(pi){
+
+                  pi.current = ui.initial;
+
+                  return localforage.setItem('profileInfo').then(function(){
+
+
+                      $rootScope.$emit("closedWindow");
+                      
+                      return true;
+          
+
+                  });
+               });
+            
+            });
+
+        });
+
+      });
+
+    }//End of processBills method
 
   }
 

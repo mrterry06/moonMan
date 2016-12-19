@@ -53,18 +53,16 @@
 	<ion-item class="item item-divider">Needs That need to be Met</ion-item>	
 	
 	<ion-list class="first-list" style="padding-top: 10px; padding-bottom: 10px;"> 
-		<ion-item ng-repeat="n in listNeeds"><b>{{ n.name | shortenText }}</b> | {{n.amount | currency }} | {{ n.occurance | occurTrans }}  <button ng-click="remove($index, 'needs')" class="button button-energized button-small"  >Remove</button></ion-item>
+		<ion-item ng-repeat="need in listNeeds track by $index"><b>{{ need.name | shortenText }}</b> | {{need.amount | currency }} | {{ need.occurance | occurTrans }}  <button ng-click="remove($index, 'needs')" class="button button-energized button-small"  >Remove</button></ion-item>
 		<ion-item ng-hide="listNeeds.length >= 1" style="color: #cccccc;">No Current Needs...</ion-item>
 	</ion-list>
 
 
 	<ion-item class="item item-divider" style="padding-top: 10px;">Bills you're Paying For</ion-item>
 	<ion-list class="second-list" style="padding-top: 10px;">
-		<ion-item ng-repeat="b in listBills"><b>{{ b.name | shortenText}}</b> | {{b.amount | currency }} | {{ b.date | date }}    <button ng-click="remove($index, 'bills')" class="button button-energized button-small" >Remove</button></ion-item>
+		<ion-item ng-repeat="bill in listBills track by $index"><b>{{ bill.name | shortenText}}</b> | {{bill.amount | currency }} | {{ bill.date | date }}    <button ng-click="remove($index, 'bills')" class="button button-energized button-small" >Remove</button></ion-item>
 		<ion-item ng-hide="listBills.length >= 1" style="color: #cccccc;">No Current Bills...</ion-item>
 	</ion-list>
-
-	<button ng-click="test()">Test!!</button>
 
 	</ion-content>
 </ion-view>

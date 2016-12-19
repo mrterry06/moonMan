@@ -16,44 +16,67 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 
 
-.controller('accountCtrl', function($scope, $state, dateHandler, billService, extraService, accountService, currencyProcessing){
+.controller('accountCtrl', function($scope, $state, dateHandler, billService, extraService, accountService, currencyProcessing, $rootScope){
 
   $scope.bill = {};
   $scope.needs = {};
   $scope.listNeeds = [];
 
-  $scope.$on('$ionicView.beforeEnter', function(){
-    $scope.finance.title = "Account";
-    
-    currencyProcessing.gotPaid();
 
-    billService.userInfo().then(function(obj){
-      if (obj.initial == undefined){ 
-        $scope.account.total = 500;
-      } else {
-        $scope.account.total = obj.initial;
-      }
-    });
+  $rootScope.$on('closedWindow', function(){
+  
+      billService.getBills().then(function(value){
+          $scope.listBills = value || [];
+      });
+
+      accountService.getNeeds().then(function(value){
+          $scope.listNeeds = value || [];
+      });
+
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function(){
+  
+      $scope.finance.title = "Account";
+    
+      currencyProcessing.gotPaid();
+
+      billService.userInfo().then(function(obj){
+ 
+          !obj.initial ? $scope.account.total = 500 : $scope.account.total = obj.initial;
+ 
+      });
+
+
 
     accountService.getNeeds().then(function(value){
 
       $scope.listNeeds = value || [];
+ 
     });
 
     billService.getBills().then(function(value){
+    
       $scope.listBills = value || [];
+    
     });
+
+    currencyProcessing.processBills();
+  
   });
 
  
   $scope.remove = function(index, array){
-    if (array == "needs") {
-      $scope.listNeeds.splice(index, 1);
-      accountService.resetNeeds($scope.listNeeds);
-    } else {
-      $scope.listBills.splice(index, 1);
-      billService.resetBills($scope.listBills);
-    }
+   
+      if (array == "needs") {
+         $scope.listNeeds.splice(index, 1);
+          accountService.resetNeeds($scope.listNeeds);
+   
+      } else {
+         $scope.listBills.splice(index, 1);
+         billService.resetBills($scope.listBills);
+      }
+
   }
 
     $scope.account.total = billService.userInfo().initial || 500;
@@ -64,12 +87,6 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
       billService.resetInitial($scope.account.total);
 
-    }
-
-    $scope.test = function(){
-
-      dateHandler.dateToDay();
-    
     }
 
     $scope.extraSpending = function(){
@@ -607,7 +624,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 })
 .controller('pinPadCtrl', function($scope){
-  $scope.colors = ["red","yello","blue", "green", "orange", "purple", "gold", "white", "pink"];
+  $scope.colors = ["red","yellow","blue", "green", "orange", "purple", "gold", "white", "pink"];
   $scope.events = ["Delete", "Submit"];
   $scope.passArr = [];
 
