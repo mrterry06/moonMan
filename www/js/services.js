@@ -1,5 +1,51 @@
 angular.module('moonMan.services', [])
 
+/* _____       _______ ______   _    _          _   _ _____  _      ______ _____   
+|  __ \   /\|__   __|  ____| | |  | |   /\   | \ | |  __ \| |    |  ____|  __ \  
+| |  | | /  \  | |  | |__    | |__| |  /  \  |  \| | |  | | |    | |__  | |__) | 
+| |  | |/ /\ \ | |  |  __|   |  __  | / /\ \ | . ` | |  | | |    |  __| |  _  /  
+| |__| / ____ \| |  | |____  | |  | |/ ____ \| |\  | |__| | |____| |____| | \ \  
+|_____/_/    \_\_|  |______| |_|  |_/_/    \_\_| \_|_____/|______|______|_|  \_*/ 
+
+.factory('dateHandler', function($rootScope){
+
+
+
+  return {
+
+    dateParser: function(date){
+      var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
+
+      yearFirstDay = Math.floor(timeStamp / 86400000);
+      
+      if (date) desiredDate = Math.ceil((new Date(date).getTime())/ 86400000);
+      if (!date) desiredDate = Math.ceil((new Date().getTime())/ 86400000);
+
+      return desiredDate - yearFirstDay;
+
+    },
+
+    getToday: function(){
+
+       return this.dateParser();
+
+    },
+    getTomorrow: function(){
+
+        var tomorrow = this.dateParser() + 1;
+        if(tomorrow >=366) return tomorrow - 365;
+        return tomorrow;
+        
+    }
+
+
+
+
+
+  }
+
+
+})
 /* .----------------.  .----------------.  .----------------.  .----------------. 
 | .--------------. || .--------------. || .--------------. || .--------------. |
 | |   ______     | || |     _____    | || |   _____      | || |   _____      | |
@@ -13,6 +59,8 @@ angular.module('moonMan.services', [])
  '----------------'  '----------------'  '----------------'  '----------------'  */
 
 .factory('billService', function($rootScope, $ionicModal, $q){
+
+
 
   var billScope = $rootScope.$new(true),
   
@@ -99,6 +147,8 @@ angular.module('moonMan.services', [])
          });
 
         },
+
+
         resetBills: function(newBills){
           localforage.setItem("bills", newBills);
 
@@ -107,13 +157,8 @@ angular.module('moonMan.services', [])
         init: function(obj){
 
           console.log(obj);
-          var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
-
-          yearFirstDay = Math.floor(timeStamp / 86400000),
           
-          today = Math.ceil((new Date().getTime())/ 86400000),
-          
-          userSignUpDate = today - yearFirstDay;
+          userSignUpDate = dateHandler.getToday();
 
 
           if (obj.hasOwnProperty('initial') && typeof obj['initial'] == "string"){
@@ -133,9 +178,9 @@ angular.module('moonMan.services', [])
           
              arr = strDate.split(" "),
           
-              realDate = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
+              selectedDay = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
           
-            billScope.accumulatedInfo["lastPayDate"] = (Math.ceil((new Date(realDate).getTime())/ 86400000)) - yearFirstDay;
+            billScope.accumulatedInfo["lastPayDate"] = dateHandler.dateParser(selectedDay);
 
           }
           
@@ -225,15 +270,9 @@ angular.module('moonMan.services', [])
 | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |                    
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'                    */ 
 
-.factory('currencyProcessing', function($rootScope){
+.factory('currencyProcessing', function($rootScope , dateHandler){
 
-   var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
-   
-   yearFirstDay = Math.floor(timeStamp / 86400000),
-   
-   today = Math.ceil((new Date().getTime())/ 86400000),
-   
-   dayOfYear = today - yearFirstDay;
+   dayOfYear = dateHandler.getToday();
 
 
   function getUserInfo(){

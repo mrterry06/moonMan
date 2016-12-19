@@ -63,5 +63,8 @@
 		<ion-item ng-repeat="b in listBills"><b>{{ b.name | shortenText}}</b> | {{b.amount | currency }} | {{ b.date | date }}    <button ng-click="remove($index, 'bills')" class="button button-energized button-small" >Remove</button></ion-item>
 		<ion-item ng-hide="listBills.length >= 1" style="color: #cccccc;">No Current Bills...</ion-item>
 	</ion-list>
+
+	<button ng-click="test()">Test!!</button>
+
 	</ion-content>
 </ion-view>

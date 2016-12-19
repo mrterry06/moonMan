@@ -16,7 +16,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 
 
-.controller('accountCtrl', function($scope, $state, $timeout, billService, extraService, accountService, currencyProcessing){
+.controller('accountCtrl', function($scope, $state, dateHandler, billService, extraService, accountService, currencyProcessing){
 
   $scope.bill = {};
   $scope.needs = {};
@@ -66,12 +66,9 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
     }
 
-    $scope.addBill = function(bill){
+    $scope.test = function(){
 
-
-      $scope.listBills.push(bill);
-    
-      $scope.bill = {};
+      dateHandler.dateToDay();
     
     }
 
@@ -89,10 +86,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
     $scope.addNeed = function(needs){
 
-     var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-     var yearFirstDay = Math.floor(timeStamp / 86400000);
-     var today = Math.ceil((new Date().getTime())/ 86400000);
-     var dayOfYear = today - yearFirstDay;
+     var dayOfYear = dateHandler.getToday();
 
 
       var d = new Date();
@@ -104,7 +98,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
       var weekBegan = parseInt(needs.weekBegan);
 
 
-      if (needs.occurance =="weekly"){
+      if (needs.occurance =="7"){
 
         if ( weekBegan < d.getDay()){
               ///Test this tomorrrow
@@ -466,6 +460,17 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     
 })
 
+
+
+/*   _____       _______ _    _ ______ _____  
+  / ____|   /\|__   __| |  | |  ____|  __ \ 
+ | |  __   /  \  | |  | |__| | |__  | |__) |
+ | | |_ | / /\ \ | |  |  __  |  __| |  _  / 
+ | |__| |/ ____ \| |  | |  | | |____| | \ \ 
+  \_____/_/    \_\_|  |_|  |_|______|_|  \_\ */
+
+
+
 .controller('gatherInfo', function($scope, $state, $ionicHistory, billService){
 
   $scope.gather = {};
@@ -536,52 +541,6 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     $scope.navPopover.show(element);
     
   }
-
-})
-
-/* .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
-| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-| |  ________    | || | _____  _____ | || | ____    ____ | || | ____    ____ | || |  ____  ____  | |
-| | |_   ___ `.  | || ||_   _||_   _|| || ||_   \  /   _|| || ||_   \  /   _|| || | |_  _||_  _| | |
-| |   | |   `. \ | || |  | |    | |  | || |  |   \/   |  | || |  |   \/   |  | || |   \ \  / /   | |
-| |   | |    | | | || |  | '    ' |  | || |  | |\  /| |  | || |  | |\  /| |  | || |    \ \/ /    | |
-| |  _| |___.' / | || |   \ `--' /   | || | _| |_\/_| |_ | || | _| |_\/_| |_ | || |    _|  |_    | |
-| | |________.'  | || |    `.__.'    | || ||_____||_____|| || ||_____||_____|| || |   |______|   | |
-| |              | || |              | || |              | || |              | || |              | |
-| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
- '----------------'  '----------------'  '----------------'  '----------------'  '----------------' */
-
-.controller('testCtrl', function($scope , $ionicSideMenuDelegate){
-
-  //     var date1 = "10-14-2016";
-  //     var date2 = "10-16-2016";
-
-  //     var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-  //    var yearFirstDay = Math.floor(timeStamp / 86400000);
-  //    var today = Math.ceil((new Date().getTime())/ 86400000);
-  //    var dayOfYear = today - yearFirstDay;
-
-
-  //     var timeStamp1 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-  //    var yearFirstDay1 = Math.floor(timeStamp1 / 86400000);
-  //    var today1 = Math.ceil((new Date(date1).getTime())/ 86400000);
-  //    var dayOfYear1 = today1 - yearFirstDay1;
-
-
-
-  //     var timeStamp2 = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-  //    var yearFirstDay2 = Math.floor(timeStamp2 / 86400000);
-  //    var today2 = Math.ceil((new Date(date2).getTime())/ 86400000);
-  //    var dayOfYear2 = today2 - yearFirstDay2;
-
-  // $scope.test = function(){
-  //   console.log(dayOfYear);
-  //   console.log(dayOfYear1);
-  //   console.log(dayOfYear2);
-
-    $ionicSideMenuDelegate.toggleRight();
-
-  
 
 })
 
