@@ -50,7 +50,7 @@ angular.module('moonMan.services', [])
 
   })  
 
-  $ionicModal.fromTemplateUrl('templates/account/bill.html',{
+  $ionicModal.fromTemplateUrl('templates/account-modal-templates/bill.html',{
     
         animation: 'slide-in-up',
         scope: billScope
@@ -616,7 +616,7 @@ angular.module('moonMan.services', [])
 
 
 
-      $ionicModal.fromTemplateUrl('templates/account/extra.html',{
+      $ionicModal.fromTemplateUrl('templates/account-modal-templates/extra.html',{
         animation: 'slide-in-up',
         scope: extraScope
       }).then(function(modal){

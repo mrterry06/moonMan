@@ -34,23 +34,17 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
   // setup an abstract state for the tabs directive
     .state("pinPad", {
       url: '/pinPad',
-      templateUrl: 'templates/pinPad.html',
+      templateUrl: 'templates/initial/pinPad.html',
       controller: 'pinPadCtrl'
     })
     .state("initial", {
       url: '/initial',
-      templateUrl: 'templates/initial.html',
+      templateUrl: 'templates/initial/initial.html',
       controller: 'gatherInfo'
     })
-    .state("test", {
-      url: '/test',
-      templateUrl: "templates/test.html",
-      controller: "testCtrl"
-    })
-
     .state("weekday", {
       url: '/weekday',
-      templateUrl: 'templates/weekday.html',
+      templateUrl: 'templates/initial/weekday.html',
       controller: 'gatherInfo'
     })
 
@@ -61,12 +55,12 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
     })
     .state("goal", {
       url: '/goal',
-      templateUrl: 'templates/goal.html',
+      templateUrl: 'templates/initial/goal.html',
       controller: 'gatherInfo'
     })
     .state("paycheck", {
       url: '/paycheck',
-      templateUrl: 'templates/paycheck.html',
+      templateUrl: 'templates/initial/paycheck.html',
       controller: 'gatherInfo'
     })
 
@@ -92,7 +86,7 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
       url: '/update',
       views: {
         "finance-content": {
-          templateUrl: 'templates/update.html',
+          templateUrl: 'templates/menu/update.html',
           controller: 'updateCtrl'
         }
       }
@@ -102,7 +96,7 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
       url: '/outcome',
       views: {
           "finance-content": {  
-        templateUrl: 'templates/outcome.html',
+        templateUrl: 'templates/menu/outcome.html',
         controller: 'outcomeCtrl'
         }
       }

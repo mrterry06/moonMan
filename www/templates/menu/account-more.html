@@ -4,7 +4,7 @@
 
 		<h1 class="moon-header">Savings:</h1>
 
-		<h3 style="text-align: center"> You have <span ng-class="{assertive: currentSavings <= savings/4, energized: currentSavings < savings && currentSavings > savings/4, balanced: currentSavings >= savings }">${{ currentSavings }} USD</span> in savings</h3>
+		<h3 style="text-align: center"> You have <span ng-class="{assertive: currentSavings <= savings/4, energized: currentSavings < savings && currentSavings > savings/4, balanced: currentSavings >= savings }">{{ currentSavings | currency }} USD</span> in savings</h3>
 		
 		<div class="list list-inset">
 
