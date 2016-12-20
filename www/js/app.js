@@ -120,17 +120,9 @@ angular.module('moonMan', ['ionic', 'nvd3', 'moonMan.controllers', 'moonMan.serv
           controller: 'contactCtrl'
         }
       }
-    })
-
-    .state("finance.settings", {
-      url: '/account-more',
-      views: {
-          "finance-content": {
-            templateUrl: 'templates/menu/settings.html',
-            controller: 'settingsCtrl'
-          }
-      }
     });
+
+
 
 
   // if none of the above states are matched, use this as the fallback

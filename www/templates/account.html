@@ -45,10 +45,10 @@
 				<option value="7" >Weekly</option>
 			</select>
 		</label>
-		<weekdays-list ng-show="needs.occurance === 'weekly'" header="What day of the week does this occur?" extra-class="item-select"  model="needs.weekBegan"></weekdays-list>
+		<weekdays-list ng-show="needs.occurance == 7" header="What day of the week does this occur?" extra-class="item-select"  model="needs.weekBegan"></weekdays-list>
 		
 	</div>
-	<button ng-disabled="!needs.weekBegan || !needs.occurance" class="button button-positive button-block" ng-click="addNeed(needs)" >Add Need</button>
+	<button ng-disabled="!needs.amount || !needs.occurance || needs.amount" class="button button-positive button-block" ng-click="addNeed(needs)" >Add Need</button>
 	
 	<ion-item class="item item-divider">Needs That need to be Met</ion-item>	
 	

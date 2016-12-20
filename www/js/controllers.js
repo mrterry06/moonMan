@@ -20,8 +20,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.bill = {};
   $scope.needs = {};
-  $scope.listNeeds = [];
-
+ 
 
   $rootScope.$on('closedWindow', function(){
   
@@ -62,7 +61,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     });
 
     currencyProcessing.processBills();
-  
+    currencyProcessing.processNeeds();
   });
 
  
@@ -103,55 +102,32 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
     $scope.addNeed = function(needs){
 
-     var dayOfYear = dateHandler.getToday();
+        needs.nextPayment = dateHandler.getTomorrow();
+
+        if ( parseInt(needs.occurance)  > 1  ){
+
+            var adjustingInfo = accountService.lastActiveDayOfWeek(needs.weekBegan);
+            
+            if (adjustingInfo[1] != dateHandler.getToday()){
+
+              needs.nextPayment = dateHandler.dayCountAdjust( adjustingInfo[1] + 7);
+            
+            }
+
+        } 
 
 
-      var d = new Date();
-      needs.dayOfWeek = d.getDay();
-      needs.dayOfMonth = d.getDate();
-      needs.month     = d.getMonth();
-      needs.addedDayOfYear = dayOfYear;
+        $scope.listNeeds.push(needs);
 
-      var weekBegan = parseInt(needs.weekBegan);
+        accountService.resetNeeds($scope.listNeeds);
 
+        $scope.needs = {};
 
-      if (needs.occurance =="7"){
-
-        if ( weekBegan < d.getDay()){
-              ///Test this tomorrrow
-          var destination = parseInt(needs.weekBegan);
-          var tracker = d.getDay();
-          var currentDay = dayOfYear;
-          while(tracker > destination) {
-            currentDay -= 1;
-            tracker -= 1;
-          }
-          
-          needs.lastProcessingDate = currentDay;
-
-        } else if (weekBegan > d.getDay()) {
-
-          var destination = d.getDay();
-          var lastPayment = ((weekBegan - dest) + dayOfYear) - 7;
-          var nextPayment = (weekBegan - dest) + dayOfYear;
-
-          needs.lastProcessingDate = lastPayment;
-
-
-        } else {
-
-          needs.lastProcessingDate = dayOfYear;
-
-        }
     }
 
 
       
-      $scope.listNeeds.push(needs);
-
-      accountService.resetNeeds($scope.listNeeds);
-      $scope.needs = {};
-    }
+    
 
 })
 
@@ -449,8 +425,10 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     $scope.finance.title = "Update";
   
     $scope.percentages = updateService.getPercentages;
-
+    
      updateService.grabInfo().then(function(val){
+
+       console.log(val);
      
        $scope.edit = val;
      

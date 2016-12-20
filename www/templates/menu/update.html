@@ -23,20 +23,7 @@
 				<span class="input-label" >Pay Check Amount:</span>
 				<input type="number" ng-model="edit.amount" placeholder="$425.23..." >
 			</label>
-<!-- 			<label class="item item-input item-select">
-				<div class="input-label" >
-					Weekday Pay Date:
-				</div>
-				<select ng-model="edit.weekday">
-					<option value="0" >Sunday</option>
-					<option value="1" >Monday</option>
-					<option value="2" >Tuesday</option>
-					<option value="3" >Wednesday</option>
-					<option value="4" >Thursday</option>
-					<option value="5" >Friday</option>
-					<option value="6" >Saturday</option>
-				</select>
-			</label> -->
+
 			<weekdays-list header="Weekday Pay Date:" extra-class="item-select"  model="edit.weekday"></weekdays-list>
 			<label class="item item-input item-select">
 				<div class="input-label" >
@@ -62,7 +49,7 @@
 				 	Savings Deduction Percentage:
 				</div>
 				<select ng-model="edit.savingsPercentage" >
-					<option ng-repeat="percent in percentages" value="percent.float" > {{ percent.percent }}</option>
+					<option ng-repeat="percent in percentages" value="{{ percent.float }}" > {{ percent.percent }}</option>
 				</select>
 			</label>
 		</div>

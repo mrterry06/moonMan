@@ -8,26 +8,48 @@ angular.module('moonMan.services', [])
 |_____/_/    \_\_|  |______| |_|  |_/_/    \_\_| \_|_____/|______|______|_|  \_*/ 
 
 .factory('dateHandler', function($rootScope){
-  var months = ["jan", 'feb', 'mar', 'april', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-
+  
 
 
   return {
 
     dateParser: function(date){
-      var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
+        var timeStamp = new Date().setFullYear(new Date().getFullYear(), 0, 1),
 
-      yearFirstDay = Math.floor(timeStamp / 86400000);
+        yearFirstDay = Math.floor(timeStamp / 86400000);
       
-      if (date) desiredDate = Math.ceil((new Date(date).getTime())/ 86400000);
-      if (!date) desiredDate = Math.ceil((new Date().getTime())/ 86400000);
-      
-      desiredDate -= yearFirstDay;
-      while (desiredDate > 366){
-        desiredDate -= 365;
-      }
+        if (date) desiredDate = Math.ceil((new Date(date).getTime())/ 86400000);
+        if (!date) desiredDate = Math.ceil((new Date().getTime())/ 86400000);
+        
+        desiredDate -= yearFirstDay;
+        while (desiredDate > 366){
+          desiredDate -= 365;
+        }
 
-      return desiredDate;
+        return desiredDate;
+    },
+
+    dayCountAdjust: function(dayNum){
+        
+        if (dayNum > 365) {
+          return dayNum - 365;
+        }
+
+        return dayNum;
+    },
+
+    newDateObj: new Date(),
+
+    getThisYear: function(){
+    
+       return this.newDateObj.getFullYear();
+    
+    },
+
+    getDayOfWeek: function(){
+    
+       return this.getDay();
+    
     },
 
     getToday: function(){
@@ -38,10 +60,24 @@ angular.module('moonMan.services', [])
     getTomorrow: function(){
 
         var tomorrow = this.dateParser() + 1;
-        if(tomorrow >=366) return tomorrow - 365;
-        return tomorrow;
+        return this.dayCountAdjust(tomorrow);
         
     },
+    lastActiveDayOfWeek: function(weekDay){
+
+       var today = this.getToday();
+       var todayWeekday = this.getDayOfWeek();
+
+       while(todayWeekday !== weekDay ){
+          todayWeekday--;
+          today--;
+          if(todayWeekday = -1) todayWeekday = 6;
+       }
+
+       return [todayWeekday, today]
+
+    },
+
     reformatDate: function(date){
       
         var day = date.getDate(),
@@ -58,14 +94,18 @@ angular.module('moonMan.services', [])
 
     },
     updateDate: function(oldDateObj, day){
-
-      var oldYear = oldDateObj.getFullYear(); 
+      
+      oldDateObj = oldDateObj.split('-');
+      var oldYear = oldDateObj[0]; 
+      
       if(day > 365 ){
         
-        oldYear += 1;
+        oldYear = parseInt(oldYear) + 1;
         day -= 365;
       
       }    
+
+      console.log(oldYear);
 
       return this.getDateFromDay( oldYear , day);
 
@@ -104,6 +144,8 @@ angular.module('moonMan.services', [])
   billScope.$watchCollection('accumulatedInfo', function(){
     
     if (billScope.accumulatedInfo.hasOwnProperty('savings')){
+
+       console.log(billScope.accumulatedInfo);
         
         localforage.setItem('profileInfo', {
          
@@ -117,7 +159,7 @@ angular.module('moonMan.services', [])
    
           frequency: billScope.accumulatedInfo['reoccurance'],
    
-          currentSavings: parseFloat(billScope.accumulatedInfo['savingsAmount']),
+          savingsAmount: parseFloat(billScope.accumulatedInfo['savingsAmount']),
    
           savingsPercentage: billScope.accumulatedInfo['savingsPercentage']        
         
@@ -375,11 +417,56 @@ angular.module('moonMan.services', [])
       });
 
     },
+
+    processNeeds: function(){
+
+        return localforage.getItem('needs').then(function(needsArr){
+
+            if(!needsArr) {console.log("No needs to process"); return; }
+
+            return localforage.getItem('userInfo').then(function(userProfile){
+
+              var newNeedsArr = needsArr.map(function(need){
+                //userProfile.initial
+
+                  if (need.nextPayment < 14 && dateHandler.getToday() > 355) need.nextPayment += 365;
+                  
+                  while (need.nextPayment <= dateHandler.getToday()){
+
+                      userProfile.initial -= need.amount;
+
+                      need.nextPayment += parseInt(need.occurance);
+
+                  }
+
+                  need.nextPayment = dateHandler.dayCountAdjust(need.nextPayment);
+
+                  return need; 
+
+              });
+
+
+              localforage.setItem('needs', newNeedsArr);
+
+              localforage.setItem('userInfo', userProfile).then(function(){
+
+                  console.log("The needs have been processed");
+
+
+              });
+
+            });
+
+
+        });
+
+    },
+
     processBills: function(){
 
     return  localforage.getItem('bills').then(function(billArr){
 
-        if (!billArr.length) { console.log("No bills to process"); return; }
+        if (!billArr) { console.log("No bills to process"); return; }
 
         return localforage.getItem('userInfo').then(function(userProfile){
 
@@ -417,6 +504,8 @@ angular.module('moonMan.services', [])
             return localforage.setItem('userInfo', userProfile).then(function(ui){
                 
                return localforage.getItem('profileInfo').then(function(pi){
+
+                  console.log(pi);
 
                   pi.current = ui.initial;
 
@@ -456,7 +545,7 @@ angular.module('moonMan.services', [])
 | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  */
 
-.factory('accountService', function(){
+.factory('accountService', function(dateHandler){
 
 
     return {
@@ -478,6 +567,12 @@ angular.module('moonMan.services', [])
     
           return value;
         });
+      },
+      refactorNeed: function(need){
+
+        dateHandler.getToday();
+
+
       },
 
       returnDays: function(){
@@ -526,6 +621,7 @@ angular.module('moonMan.services', [])
       return localforage.getItem('profileInfo')
         .then(function(val){
     
+          console.log("This is profile information");
           console.warn(val);
     
           return val || {};
