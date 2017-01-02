@@ -1,17 +1,19 @@
 <ion-view id="savings" class="body">
 
 	<ion-content style="top: 120px;">
-	<h1 align="center" class="moon-header">How much do you want to save??</h1>
-		<div style="padding: 20px 20px 20px 20px;">
-			<p ng-show="gather.savings" >$</p><input class="body" ng-model="gather.savings"  style="font-size: 20px; width: 100%; padding: 20px 20px 20px 20px; border-right: none; border-left: none; border-top: none;  border-bottom-color: black; text-align: center;" placeholder="Enter Savings Goal">
+	<h1 align="center" class="moon-header">How Much Do You Want To Save??</h1>
+		<div class="initial-input-container">
+			<p ng-show="gather.savings" >$</p><input class="body" type="number" ng-model="gather.savings"   placeholder="Enter Saving's Goal" autofocus>
+			<hr>
 		</div>
-	<h2 align="center" class="moon-header">What percentage do you want taken out of your paycheck?</h2>	
-		<div>
+	<h2 align="center" class="moon-header">What Percentage Do You Want Taken Out Of Your Paycheck?</h2>	
+		<div class="initial-input-container percentage-select" >
 			<label style="height: 75px;" class="item item-input item-select">
-				<select style="font-size: 30px; padding-right: 45%;" ng-model="gather.savingsPercentage">
+				<select ng-model="gather.savingsPercentage">
 					<option ng-repeat="percent in percentages" value="{{ percent.float }}" >{{ percent.percent }}</option>
 				</select>
-			</label>			
+			</label>
+			<hr>			
 		</div>
 	<a class="button button-block button-positive" ui-sref="finance.account" ng-disabled="!gather.savings || !gather.savingsPercentage" >Get To Managing!</a>
 	</ion-content>

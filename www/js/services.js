@@ -9,8 +9,6 @@ angular.module('moonMan.services', [])
 
 .factory('dateHandler', function($rootScope){
   
-
-
   return {
 
     dateParser: function(date){
@@ -41,27 +39,20 @@ angular.module('moonMan.services', [])
     newDateObj: new Date(),
 
     getThisYear: function(){
-    
        return this.newDateObj.getFullYear();
-    
     },
 
     getDayOfWeek: function(){
-    
        return this.getDay();
-    
     },
 
     getToday: function(){
-
        return this.dateParser();
-
     },
-    getTomorrow: function(){
 
+    getTomorrow: function(){
         var tomorrow = this.dateParser() + 1;
         return this.dayCountAdjust(tomorrow);
-        
     },
     lastActiveDayOfWeek: function(weekDay){
 
@@ -131,14 +122,8 @@ angular.module('moonMan.services', [])
 
 .factory('billService', function($rootScope, $ionicModal, $q, dateHandler){
 
-
-
-  var billScope = $rootScope.$new(true),
-  
-  billModal;
-  
+  var billScope = $rootScope.$new(true), billModal;  
   billScope.bill = {};
-  
   billScope.accumulatedInfo = {};
 
   billScope.$watchCollection('accumulatedInfo', function(){
@@ -150,17 +135,11 @@ angular.module('moonMan.services', [])
         localforage.setItem('profileInfo', {
          
           current: billScope.accumulatedInfo['initial'],
-   
           amount:  parseFloat(billScope.accumulatedInfo['payCheckAmount']),
-   
           weekday: billScope.accumulatedInfo['paydayOfWeek'],
-   
           goal: parseFloat(billScope.accumulatedInfo['savings']),
-   
           frequency: billScope.accumulatedInfo['reoccurance'],
-   
           savingsAmount: parseFloat(billScope.accumulatedInfo['savingsAmount']),
-   
           savingsPercentage: billScope.accumulatedInfo['savingsPercentage']        
         
         });
@@ -171,37 +150,11 @@ angular.module('moonMan.services', [])
 
   })  
 
-  $ionicModal.fromTemplateUrl('templates/account-modal-templates/bill.html',{
-    
-        animation: 'slide-in-up',
-        scope: billScope
-    
-      }).then(function(modal){
-    
-        billModal = modal;
-     
-      });
+ 
 
       billScope.addBill = function(bill){
 
-        bill.nextPayment = dateHandler.reformatDate(bill.date);
-        
-        localforage.getItem("bills").then(function(arr){
-        
-            if (!arr)  arr = []; 
 
-            arr[arr.length] = bill;
-
-            localforage.setItem("bills", arr).then(function(){
-
-                $rootScope.$emit("closedWindow");
-               
-                billScope.bill = {};
-                billModal.hide();
-
-            });
-
-        });
 
   }
 
@@ -236,11 +189,9 @@ angular.module('moonMan.services', [])
           userSignUpDate = dateHandler.getToday();
 
 
-          if (obj.hasOwnProperty('initial') && typeof obj['initial'] == "string"){
+          if (obj.hasOwnProperty('initial')){
               
-                obj['initial'] = parseFloat(obj['initial']);
-          
-               billScope.accumulatedInfo['initial'] = obj['initial'];
+            billScope.accumulatedInfo['initial'] = obj['initial'];
           
           }
 
@@ -248,12 +199,9 @@ angular.module('moonMan.services', [])
           if(obj['lastPayDate'] && typeof obj['lastPayDate'] !== Number){
           
             var strDate = obj['lastPayDate'].toString(),
-          
             strMonth = obj['lastPayDate'].getMonth(), 
-          
-             arr = strDate.split(" "),
-          
-              selectedDay = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
+            arr = strDate.split(" "),
+            selectedDay = (strMonth + 1) + "-" + arr[2] + "-" + arr[3]; 
           
             billScope.accumulatedInfo["lastPayDate"] = dateHandler.dateParser(selectedDay);
 
@@ -298,6 +246,22 @@ angular.module('moonMan.services', [])
             
             console.log("Initial property is being changed");
           
+          });
+        },
+        addBill: function(bill){
+          bill.nextPayment = dateHandler.reformatDate(bill.date);
+        
+          return localforage.getItem("bills").then(function(arr){
+          
+              if (!arr)  arr = []; 
+              arr[arr.length] = bill;
+
+              localforage.setItem("bills", arr).then(function(){
+
+                  $rootScope.$emit("closedWindow");
+
+              });
+
           });
         },
         getPercentages: function(){
@@ -371,26 +335,18 @@ angular.module('moonMan.services', [])
       getUserInfo().then(function(userObj){
 
           var pay = 0,  
-          
           check = parseInt(userObj.payCheckAmount),
-          
           lastPayDate = userObj.lastPayDate, 
-          
           dayIncrement = parseInt(userObj.reoccurance),
-          
           deductedAmount = parseFloat(userObj.savingsPercentage) * userObj.payCheckAmount,
-          
           savingsIncrease = 0; 
 
 
           if (lastPayDate > 335 && dayOfYear < 20) dayOfYear += 365;
-
           if (lastPayDate < 30 && dayOfYear > 335) return;
 
           while (lastPayDate <= dayOfYear){
-          
              lastPayDate += dayIncrement;
-          
              if (lastPayDate <= dayOfYear){
           
                pay += check;
@@ -407,11 +363,8 @@ angular.module('moonMan.services', [])
 
 
           userObj.initial += pay;
-          
           userObj.lastPayDate = lastPayDate;
-          
           userObj.savingsAmount += savingsIncrease;
-
           localforage.setItem('userInfo', userObj);
 
       });
@@ -432,9 +385,7 @@ angular.module('moonMan.services', [])
                   if (need.nextPayment < 14 && dateHandler.getToday() > 355) need.nextPayment += 365;
                   
                   while (need.nextPayment <= dateHandler.getToday()){
-
                       userProfile.initial -= need.amount;
-
                       need.nextPayment += parseInt(need.occurance);
 
                   }
@@ -552,21 +503,12 @@ angular.module('moonMan.services', [])
 
       resetNeeds: function(objArray){
     
-        localforage.setItem('needs', objArray).then(function(){
-    
-          console.log("Needs has been successfully added");
-    
-        });
+        localforage.setItem('needs', objArray);
       },
 
       getNeeds: function(){
     
-        return  localforage.getItem('needs').then(function(value){
-    
-          console.log("grabbing needs");
-    
-          return value;
-        });
+        return  localforage.getItem('needs');
       },
       refactorNeed: function(need){
 
@@ -639,17 +581,11 @@ angular.module('moonMan.services', [])
               return localforage.getItem('userInfo').then(function(val){
 
                   val.initial = info.current;
-          
                   val.payCheckAmount = info.amount;
-          
                   val.paydayOfWeek = info.weekday;
-          
                   val.savings = info.goal;
-          
                   val.reoccurance = info.frequency;
-          
                   val.savingsAmount = info.savingsAmount;
-          
                   val.savingsPercentage = info.savingsPercentage;
           
                   return  localforage.setItem('userInfo', val).then(function(){
@@ -792,13 +728,9 @@ angular.module('moonMan.services', [])
   return {
 
      storeWants: storingWants,
-    
      getAllInfo: grabInfo,
-    
      storeGoals: storingGoals,
-    
      purchase: purchase,
-    
      remove: remove
 
   }
@@ -879,17 +811,12 @@ angular.module('moonMan.services', [])
                   $ionicPopup.show({
                    
                     title: "Payment",
-                   
-                    template: "Choose savings or checking",
-                   
+                    template: "Choose savings or checking",                   
                     scope: extraScope,
-                   
                     buttons: [{ 
                    
                       text:"Savings",
-                   
                       type: "button-positive",
-                   
                       onTap: function(){
                         extraPayment('savings');
                       }
@@ -897,9 +824,7 @@ angular.module('moonMan.services', [])
                       }, {
                    
                        text: "Current",
-
                        type: "button-balanced button-outline",
-                       
                        onTap: function(){
                         extraPayment('current');
                        }

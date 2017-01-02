@@ -14,6 +14,7 @@ angular.module("moonMan.directives", [])
 		link: function(scope, element, attr){
 		//	console.warn(scope.extraClasses);
 		// Test this mechanism
+			scope.modelType = '1'
 		}
 	}
 

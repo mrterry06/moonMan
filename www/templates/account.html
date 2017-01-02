@@ -1,17 +1,15 @@
 <ion-view id="account" view-title="Account">
 
 
-	<ion-content class="vert-row has-header" >	
+	<ion-content class=" has-header" >	
 	<h1 style="text-align: center;" class="moon-header">Current Amount: </h1>
 	<div class="total-container">
 		<p  class="amount minus adjust" ng-click="adjust(-1)" >-</p>		 
 		<h2 class="amount" style=" color: #595757;"> {{ account.total | currency }}</h2>
 		<p class="amount plus adjust" ng-click="adjust(+1)" >+</p>
+		<hr>
 	</div>
-	<div ng-click="extraSpending()" class="button extra-area button-block button-stable">
-		Emergency? Random Spending? </br> or Unplanned Payment?
-	</div>
-	<div ng-show="unexpected" >
+	<!-- <div ng-show="unexpected" >
 		<ion-item class="item item-divider" >What was it?</ion-item>
 		<label class="item item-input">
 			<input type="text" placeholder="What was it?" >
@@ -21,9 +19,36 @@
 			<span ng-show="extra.price">$</span><input ng-model="extra.price" type="number" placeholder="How much did it cost?" >
 		</label>
 		<button class="button button-block button-dark" >Submit</button>
-	</div>
+	</div> -->
+	<!-- Start of Bills -->
+	<div class="list list-inset">
+		<div class="item item-divider">
+			Insert Bill
+		</div>
+		<label class="item item-input">
+			<input placeholder="Bill Name.." type="text" ng-model="bill.name" >
+		</label>
+		<label class="item item-input">	
+			<span ng-show="bill.amount">$</span>  <input placeholder="Bill Amount"  type="number" ng-model="bill.amount">
+		</label>
+		<div class="item item-divider">
+			Next Due Date?
+		</div>
+		<label class="item item-input">	
+		<input on-touch="billDate=true" type="date" ng-model="bill.date" >
+		</label>
+		<label class="item item-input item-select" >
+			<div class="input-label">Type of Occurance</div>
+
+			<select ng-model="bill.occurance">
+				<option value="1" >One Time</option>
+				<option value="2" >Monthly</option>
+			</select>
+		</label>
+	</div>	
+	<button class="button button-positive button-block" ng-disabled="!bill.name || !bill.amount || !billDate || !bill.occurance" ng-click="addBill(bill)">Add Bill</button>
 	
-	<button class="button button-positive button-block" ng-click="openBillModal()">Add Bill</button>
+	<!-- Start of Needs -->
 	<div class="list list-inset">
 		<div class="item item-divider">
 			Insert Reoccuring Needs
@@ -49,17 +74,19 @@
 		
 	</div>
 	<button ng-disabled="!needs.amount || !needs.occurance || needs.amount" class="button button-positive button-block" ng-click="addNeed(needs)" >Add Need</button>
+		<button ng-click="extraSpending()" class="button button-energized" style="margin: 0 auto; display: block;">
+		Emergency or Unplanned Payment?
+	</button>
+	<ion-item class="item item-divider" style="margin-top: 10px;">Needs That need to be Met</ion-item>	
 	
-	<ion-item class="item item-divider">Needs That need to be Met</ion-item>	
-	
-	<ion-list class="first-list" style="padding-top: 10px; padding-bottom: 10px;"> 
+	<ion-list class="first-list" id="needs" style="padding-top: 10px; padding-bottom: 10px;"> 
 		<ion-item ng-repeat="need in listNeeds track by $index"><b>{{ need.name | shortenText }}</b> | {{need.amount | currency }} | {{ need.occurance | occurTrans }}  <button ng-click="remove($index, 'needs')" class="button button-energized button-small"  >Remove</button></ion-item>
 		<ion-item ng-hide="listNeeds.length >= 1" style="color: #cccccc;">No Current Needs...</ion-item>
 	</ion-list>
 
 
 	<ion-item class="item item-divider" style="padding-top: 10px;">Bills you're Paying For</ion-item>
-	<ion-list class="second-list" style="padding-top: 10px;">
+	<ion-list class="second-list" id="bills" style="padding: 10px 0 20px 0">
 		<ion-item ng-repeat="bill in listBills track by $index"><b>{{ bill.name | shortenText}}</b> | {{bill.amount | currency }} | {{ bill.date | date }}    <button ng-click="remove($index, 'bills')" class="button button-energized button-small" >Remove</button></ion-item>
 		<ion-item ng-hide="listBills.length >= 1" style="color: #cccccc;">No Current Bills...</ion-item>
 	</ion-list>

@@ -16,7 +16,7 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 
 
-.controller('accountCtrl', function($scope, $state, dateHandler, billService, extraService, accountService, currencyProcessing, $rootScope){
+.controller('accountCtrl', function($scope, $location, $ionicScrollDelegate, $state, dateHandler, billService, extraService, accountService, currencyProcessing, $rootScope){
 
   $scope.bill = {};
   $scope.needs = {};
@@ -26,6 +26,9 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   
       billService.getBills().then(function(value){
           $scope.listBills = value || [];
+          // $location.hash("bills");
+          // $ionicScrollDelegate.anchorScroll(true);
+
       });
 
       accountService.getNeeds().then(function(value){
@@ -36,12 +39,11 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
   $scope.$on('$ionicView.beforeEnter', function(){
   
-      $scope.finance.title = "Account";
-    
+      $scope.finance.title = "Account";    
+      
       currencyProcessing.gotPaid();
 
-      billService.userInfo().then(function(obj){
- 
+      billService.userInfo().then(function(obj){ 
           !obj.initial ? $scope.account.total = 500 : $scope.account.total = obj.initial;
  
       });
@@ -51,18 +53,26 @@ angular.module('moonMan.controllers', ['moonMan.services'])
     accountService.getNeeds().then(function(value){
 
       $scope.listNeeds = value || [];
- 
+      $location.hash('needs');
+      $ionicScrollDelegate.anchorScroll(true);
     });
 
     billService.getBills().then(function(value){
     
       $scope.listBills = value || [];
-    
+     
     });
 
     currencyProcessing.processBills();
     currencyProcessing.processNeeds();
   });
+
+  $scope.addBill = function(bill){
+
+    billService.addBill(bill);
+    $scope.bill = {}
+
+  }
 
  
   $scope.remove = function(index, array){
@@ -151,6 +161,20 @@ angular.module('moonMan.controllers', ['moonMan.services'])
   
   $scope.$on('$ionicView.beforeEnter', function(){
     $scope.finance.title = "Outcome";
+
+    localforage.getItem("bills").then(function(val){
+
+      if (!val){
+
+        $scope.test.data = {key: "One", y:600};
+
+      } else {
+        $scope.test.data = val;
+      }
+
+    });
+
+
   });
   $scope.line = {};
   $scope.test = {};
@@ -162,11 +186,11 @@ angular.module('moonMan.controllers', ['moonMan.services'])
       x: function(d){ return d.key;},
       y: function(d){ return d.y; },
       showLabels: true,
-      duration: 500,
+      duration: 2000,
       labelThreshold: 0.01,
       labelSunBeamLayout: true,
       width: 320,
-      title: "We Did It!",
+      title: "Currency Distribution Chart",
       donut: true,
       legend: {
         margin: {
@@ -178,7 +202,11 @@ angular.module('moonMan.controllers', ['moonMan.services'])
       }
     }
   };
-  $scope.test.data = [{key: "One", y:5}, {key:"Two", y:2}, {key:"Three", y:9}, {key:"Four", y:7}, {key:"Five", y:4}, {key:"Six", y:3}, {key:"Seven", y:.5}];
+
+  $scope.test.data = [ {key:"Three", y:9}, {key:"Four", y:7}, {key:"Five", y:4}, {key:"Six", y:3}, {key:"Seven", y:.5}];
+
+
+
 
 
  $scope.line.options = {
@@ -468,7 +496,10 @@ angular.module('moonMan.controllers', ['moonMan.services'])
 
 .controller('gatherInfo', function($scope, $state, $ionicHistory, billService){
 
-  $scope.gather = {};
+  $scope.gather = {
+    reoccurance: '7',
+    savingsPercentage: '0'
+  };
 
 
   $scope.percentages = billService.getPercentages();
@@ -571,7 +602,9 @@ angular.module('moonMan.controllers', ['moonMan.services'])
           title: "Invalid Email",
           template: "The email you have inserted is invalid, please enter a valid email"
       });
+
     return;
+
   }
 
 

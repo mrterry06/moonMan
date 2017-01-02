@@ -9816,6 +9816,17 @@ a.button {
   transition-duration: 0s; }
 
 /* GLOBALS */
+/*Extends*/
+.header-props, .moon-header, #contact h1 {
+  text-align: center;
+  font-family: 'Baloo Bhai'; }
+
+.active .modal-backdrop-bg {
+  opacity: .5;
+  transition: opacity 300ms ease-in-out;
+  background-color: #000; }
+
+/*End Extends*/
 ion-spinner {
   position: fixed;
   top: 50%;
@@ -9826,16 +9837,6 @@ ion-spinner {
   width: 60px;
   background-color: white; }
 
-.header-props, .moon-header, #contact h1 {
-  text-align: center;
-  font-family: 'Baloo Bhai'; }
-
-/*END GLOBALS */
-.active .modal-backdrop-bg {
-  opacity: .5;
-  transition: opacity 300ms ease-in-out;
-  background-color: #000; }
-
 .body, #account-more, #weekday, #pinPad, body {
   background-color: #F6F7F9; }
 
@@ -9843,6 +9844,17 @@ ion-spinner {
   background-color: #444;
   color: white; }
 
+.initial-input-container {
+  padding: 20px 20px 20px 20px; }
+  .initial-input-container input {
+    font-size: 20px;
+    width: 100%;
+    padding: 20px 20px 20px 20px;
+    text-align: center; }
+  .initial-input-container hr {
+    border-color: black; }
+
+/*END GLOBALS */
 #bill {
   width: inherit;
   min-height: inherit;
@@ -9908,12 +9920,24 @@ ion-spinner {
   font-size: 19px; }
 
 #weekday label {
-  border-top: none;
-  padding: 20px 20px 20px 20px; }
+  border: none;
+  padding: 20px 20px 20px 20px;
+  background: none; }
+  #weekday label select {
+    background: none; }
+  #weekday label::after {
+    right: 30px;
+    top: 30px; }
+
+#weekday hr {
+  border-color: black;
+  margin: 0 20px 0 20px; }
 
 #weekday weekdays-list label {
   display: block;
   padding: 5px 0 0 10px; }
+  #weekday weekdays-list label::after {
+    top: 65px; }
 
 #weekday weekdays-list .moon-header {
   color: black;
@@ -9923,10 +9947,8 @@ ion-spinner {
 #weekday weekdays-list select {
   display: block;
   position: inherit;
-  background: none;
-  position: inherit;
-  margin-left: 20px;
-  padding: 0 0 0 0 !important;
+  margin-left: 60px;
+  padding-left: 0 !important;
   width: 100%;
   text-align-last: center; }
 
@@ -9964,6 +9986,15 @@ ion-spinner {
   border-radius: 8px;
   width: 60px;
   background-color: white; }
+
+#savings .percentage-select label {
+  background: none;
+  border: none; }
+
+#savings .percentage-select select {
+  background: none;
+  font-size: 30px;
+  padding-right: 45%; }
 
 #menu .list-item::active {
   background-color: black;

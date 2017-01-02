@@ -1,16 +1,18 @@
 <ion-view id="initial" class="body">
 	<ion-content style="top: 50px;">
 		<div class="first-input">
-			<h1 align="center" class="moon-header">How Much Do you Make on Your Paycheck?</h1>
-			<div style="padding: 20px 20px 20px 20px;">
-				<p ng-show="gather.payCheckAmount" >$</p><input class="body" ng-model="gather.payCheckAmount"  style="font-size: 20px; width: 100%; padding: 20px 20px 20px 20px; border-right: none; border-left: none; border-top: none;  border-bottom-color: black; text-align: center;" placeholder="Enter In Initial Amount">
+			<h1 align="center" class="moon-header">How Much Do You Make On Your Paycheck?</h1>
+			<div class="initial-input-container" >
+				<p ng-show="gather.payCheckAmount" >$</p><input class="body" type="number" ng-model="gather.payCheckAmount" placeholder="Enter Paycheck Amount" autofocus>
+				<hr>
 			</div>
 		</div>
 
 		<div class="second-input">
-			<h1 align="center" class="moon-header">When was the Last Day you Got Paid?</h1>
-			<div style="padding: 20px 20px 20px 20px;">
-				<input class="body" ng-model="gather.lastPayDate" on-touch="dateTouch=true"  type="date" style="font-size: 20px; width: 100%; padding: 20px 20px 20px 20px; border-right: none; border-left: none; border-top: none;  border-bottom-color: black; text-align: center;" >
+			<h1 align="center" class="moon-header">When Was The Last Day You Got Paid?</h1>
+			<div class="initial-input-container">
+				<input class="body" ng-model="gather.lastPayDate" on-touch="dateTouch=true"  type="date" >
+				<hr>
 			</div>
 		</div>	
 	<button class="button button-block button-positive" ui-sref="weekday" ng-disabled="!gather.payCheckAmount || !dateTouch">Next</button>
